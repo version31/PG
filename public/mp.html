@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+
+<script>
+    // url = 'http://mp.nikanproject.ir/api/v1/auth/password/login';
+    url = 'http://parsiangram.com/api/v1/auth/password/login';
+    async function checkUniqueness() {
+        let body = {
+            mobile: '09124855735',
+            password: '12345678'
+        };
+
+        // body = null;
+
+        return axios.post(url, body)
+
+    }
+    checkUniqueness()
+        .then((r) => {
+
+            console.log(r.data)
+        })
+        .catch(err => console.log("err: ", err))
+</script>
+</body>
+</html>

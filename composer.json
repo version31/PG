@@ -13,6 +13,7 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
         "hekmatinasser/verta": "^1.9",
+        "iamfarhad/validation": "^1.1",
         "intervention/image": "^2.4",
         "ipecompany/smsirlaravel": "^1.0",
         "larabook/gateway": "^3.3",

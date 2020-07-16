@@ -179,6 +179,7 @@ return [
         App\Providers\ResultDataServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Iamfarhad\Validation\ValidationServiceProvider::class
 
     ],
 

@@ -4,6 +4,8 @@
 namespace App\Helpers;
 
 
+use Illuminate\Http\JsonResponse;
+
 class ResultData
 {
 
@@ -12,6 +14,7 @@ class ResultData
     private $status;
     private $message;
     private $codes;
+    private $statusCode = 200;
 
 
     public function __construct()
@@ -60,12 +63,14 @@ class ResultData
 
     /**
      * @param array $errors
+     * @param int $statusCode
      * @return $this
      */
-    public function setErrors(array $errors)
+    public function setErrors(array $errors, $statusCode = 422)
     {
         #errors is array
         $this->errors = $errors;
+        $this->statusCode = $statusCode;
 
         $this->setStatus(false);
         $this->setData(null);
@@ -98,7 +103,7 @@ class ResultData
      */
     private function setStatus($status)
     {
-        if ($status == 0 OR $status = false) {
+        if ($status == 0 or $status = false) {
             $this->status = false;
         }
 
@@ -113,14 +118,15 @@ class ResultData
             $this->setData(null);
         }
         $data = [
-            'status' => $this->getStatus(),
-            'error' => $this->getErrors(),
+//            'status' => $this->getStatus(),
+            'errors' => $this->getErrors(),
             'data' => $this->getData(),
         ];
 
         header('Content-Type: application/json');
 
-        return response()->json($data);
+
+        return new JsonResponse($data, $this->statusCode);
 
     }
 }

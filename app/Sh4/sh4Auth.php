@@ -2,6 +2,8 @@
 
 namespace App\Sh4;
 
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\AfterLoginResource;
 use App\SMSLog;
 use App\User;
 use Auth;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Ipecompany\Smsirlaravel\Smsirlaravel;
 use Result;
+use Spatie\Permission\Models\Role;
 use Validator;
 
 
@@ -24,6 +27,9 @@ trait sh4Auth
     ];
 
     public $limitMinute = 5;
+
+
+    public $first_limit_insert_product = 10;
 
 
     public function loginWithPassword(Request $request)
@@ -62,52 +68,28 @@ trait sh4Auth
     }
 
 
-    private function register(Request $request)
+    private function register(RegisterRequest $request)
     {
+        $input['mobile'] = $request->get('mobile');
+        $input['password'] = bcrypt($request->get('password'));
 
 
-        Log::emergency($request->all()); #todo test
+        $user = User::where('mobile', $input['mobile'])->first();
 
-        $validator = Validator::make($request->all(), [
-            'mobile' => 'required',
-            'password' => 'required'
-        ]);
-
-        $role = $request->get('role');
-
-
-        switch ($role) {
-            case "user":
-                $input['role_id'] = 3;
-                break;
-            case "provider":
-                $input['role_id'] = 2;
-                $input['status'] = 0;
-                break;
-
-            default:
-                return Result::setErrors(['wrong-role'])->get();
-        }
-
-        if ($validator->fails()) {
-            $result = Result::setErrors([$validator->errors()]);
+        if ($user) {
+            $user->update($input);
         } else {
-            $input['mobile'] = $request->get('mobile');
-            $input['password'] = bcrypt($request->get('password'));
+            $input['limit_insert_product'] = $this->first_limit_insert_product;
+            $input['shop_expired_at'] = Carbon::now()->addYears(5);
+            $user = User::create($input);
 
-
-            $user = User::where('mobile', $input['mobile'])->first();
-
-            if ($user)
-                $user->update($input);
-            else
-                $user = User::create($input);
-
-
-            $result = $this->setResultAfterLogin($user);
+            $role = Role::where('name', 'user')->first();
+            $user->assignRole($role);
         }
 
-        return $result->get();
+
+        return $this->setResultAfterLogin($user);
+
     }
 
 
@@ -121,7 +103,6 @@ trait sh4Auth
     #STEP01
     public function getMobile(Request $request)
     {
-
 
         $mobile = $request->input('mobile');
         $device_id = $request->input('device_id');
@@ -200,11 +181,11 @@ trait sh4Auth
         }
 
         if (isset($user) && !$validator->fails() && $log) {
-            $result = $this->setResultAfterLogin($user);
+            return $this->setResultAfterLogin($user);
         } else if (!$validator->fails() && $log) {
             $data = [
                 'user_registered' => false,
-                'mobile' => $request->only('mobile')['mobile'],
+                'mobile' => $request->get('mobile'),
             ];
 
             $result = Result::setData($data);
@@ -214,7 +195,7 @@ trait sh4Auth
 
 
     #STEP03
-    protected function registerWithCode(Request $request)
+    protected function registerWithCode(RegisterRequest $request)
     {
 
         $code = $request->only('code');
@@ -259,16 +240,23 @@ trait sh4Auth
 
     public function setResultAfterLogin($user)
     {
+
         $user = User::where('id', $user->id)->first();
 
-        $data['token'] = $user->createToken('MP')->accessToken;
-        $data['user_registered'] = true;
-        $data['status'] = $user->status;
-        $data['mobile'] = $user->mobile;
-        $data['role'] = $user->role;
-        $data['name'] = $user->name;
-        $data['id'] = $user->id;
-        return Result::setData($data);
+
+        $data = new \stdClass();
+
+        $data->token = $user->createToken('MP')->accessToken;
+        $data->user_registered = true;
+        $data->status = $user->status;
+        $data->mobile = $user->mobile;
+        $data->roles = $user->getRoleNames();
+        $data->name = $user->name;
+        $data->id = $user->id;
+
+
+        return new AfterLoginResource($data);
+//        return Result::setData($data);
     }
 
 
@@ -304,5 +292,69 @@ trait sh4Auth
         \DB::table('sms_logs')->delete();
         return "logs dropped successfully!";
     }
+
+
+
+//    public function v1_setResultAfterLogin($user)
+//    {
+//        $user = User::where('id', $user->id)->first();
+//
+//        $data['token'] = $user->createToken('MP')->accessToken;
+//        $data['user_registered'] = true;
+//        $data['status'] = $user->status;
+//        $data['mobile'] = $user->mobile;
+//        $data['role'] = $user->role;
+//        $data['name'] = $user->name;
+//        $data['id'] = $user->id;
+//        return Result::setData($data);
+//    }
+
+//    private function v1_register(Request $request)
+//    {
+//
+//
+//        Log::emergency($request->all()); #todo test
+//
+//        $validator = Validator::make($request->all(), [
+//            'mobile' => 'required',
+//            'password' => 'required'
+//        ]);
+//
+//        $role = $request->get('role');
+//
+//
+//        switch ($role) {
+//            case "user":
+//                $input['role_id'] = 3;
+//                break;
+//            case "provider":
+//                $input['role_id'] = 2;
+//                $input['status'] = 0;
+//                break;
+//
+//            default:
+//                return Result::setErrors(['wrong-role'])->get();
+//        }
+//
+//        if ($validator->fails()) {
+//            $result = Result::setErrors([$validator->errors()]);
+//        } else {
+//            $input['mobile'] = $request->get('mobile');
+//            $input['password'] = bcrypt($request->get('password'));
+//
+//
+//            $user = User::where('mobile', $input['mobile'])->first();
+//
+//            if ($user)
+//                $user->update($input);
+//            else
+//                $user = User::create($input);
+//
+//
+//            $result = $this->setResultAfterLogin($user);
+//        }
+//
+//        return $result->get();
+//    }
 
 }

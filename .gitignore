@@ -16,4 +16,5 @@ public/uploads/thumbnail/*
 !public/uploads/media/default.png
 !public/uploads/thumbnail/default.png
 /resources
+/database/documents/*
 

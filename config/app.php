@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ResultDataServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 

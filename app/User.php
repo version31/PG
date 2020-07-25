@@ -12,17 +12,20 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, HasRoles;
 
+
+    protected $guard_name = 'api';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'shop_name', 'email', 'password', 'mobile', 'role_id', 'status', 'first_name', 'last_name', "shop_expired_at","fax","limit_insert_product"
+        'shop_name', 'email', 'password', 'mobile', 'role_id', 'status', 'first_name', 'last_name', "shop_expired_at", "fax", "limit_insert_product"
     ];
 
 
-    protected $appends = ['name', 'role','bio_html'];
+    protected $appends = ['name', 'role', 'bio_html'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -61,7 +64,7 @@ class User extends Authenticatable
 
     public function favoriteProducts()
     {
-        return $this->morphedByMany('App\Product', 'bookmarkable')->select('id', 'title', 'media_path', 'count_like', 'type' , 'products.user_id')->with(['addables' , 'user']);
+        return $this->morphedByMany('App\Product', 'bookmarkable')->select('id', 'title', 'media_path', 'count_like', 'type', 'products.user_id')->with(['addables', 'user']);
     }
 
 
@@ -80,8 +83,6 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
 
     }
-
-
 
 
     public function likes()
@@ -134,15 +135,9 @@ class User extends Authenticatable
 
     public function scopeIsProvider($query)
     {
-
-//        return $query->where('role_id', 2);
-
-        return $query->where('role_id', 2)
-            ->leftJoin(\DB::raw("(SELECT star,user_id FROM `stars` WHERE star_expired_at > '" . Carbon::now() . "') AS S"), 'user_id', '=', 'users.id')
-            ->orderBy('star', 'Desc');
-
-
-
+        return $query->role('provider')
+            ->join('stars as providerStar', 'providerStar.user_id', '=', 'users.id')
+            ->orderby('providerStar.star', 'desc');
     }
 
 
@@ -181,15 +176,14 @@ class User extends Authenticatable
 
     public function scopeShopIsActive($query)
     {
-        return $query->where('status','>',0)->where('shop_expired_at','>', Carbon::now());
+        return $query->where('status', '>', 0)->where('shop_expired_at', '>', Carbon::now());
     }
 
     public function stars()
     {
-        return $this->hasOne(Star::class);
+        return $this->hasOne(Star::class)->where('star_expired_at', '>', Carbon::now());
 
     }
-
 
 
     public function getBioAttribute($value)
@@ -201,7 +195,6 @@ class User extends Authenticatable
     {
         return $this->bio;
     }
-
 
 
 }

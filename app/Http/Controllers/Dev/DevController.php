@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Schema;
 class DevController extends Controller
 {
 
+//"resource" => new UserResource($this->user),
+//"collection" => RoleCollection::collection($this->roles)
+
     public $columns;
 
     /**
@@ -23,6 +26,8 @@ class DevController extends Controller
      * from: \"(.*)\",
      * to:   "$1" => \$this->$1,
      */
+
+
 
 
     public function getTableColumns(Request $request, $table, $type = null)

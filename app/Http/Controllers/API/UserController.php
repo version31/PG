@@ -317,40 +317,40 @@ class UserController extends Controller
     }
 
 
-    public function indexProvider()
-    {
-        $data = [];
-        $providers = User::isProvider()
-            ->shopIsActive()
-            ->isActive()
-            ->orderBy('id' , 'Desc')
-            ->with(['stars' => function($q) {
-                return $q->orderBy('star','Desc');
-            }])
-            ->select('*');
-
-
-
-
-        if (Input::get('q'))
-            $providers = $providers->where('shop_name', 'like', '%' . Input::get('q') . '%');
-
-        if (Input::get('star'))
-            $providers = $providers->where('star', '>=', Input::get('star'));
-
-        if (Input::get('cat_id')) {
-            $providers = $providers->whereHas('products', function ($q) {
-                $q->where('category_id', Input::get('cat_id'));
-            });
-
-            $data['category'] = Category::select('id', 'name')->find(Input::get('cat_id'));
-        }
-
-
-        $data['providers'] = $providers->get();
-
-        return Result::setData($data)->get();
-    }
+//    public function indexProvider()
+//    {
+//        $data = [];
+//        $providers = User::isProvider()
+//            ->shopIsActive()
+//            ->isActive()
+//            ->orderBy('id' , 'Desc')
+//            ->with(['stars' => function($q) {
+//                return $q->orderBy('star','Desc');
+//            }])
+//            ->select('*');
+//
+//
+//
+//
+//        if (Input::get('q'))
+//            $providers = $providers->where('shop_name', 'like', '%' . Input::get('q') . '%');
+//
+//        if (Input::get('star'))
+//            $providers = $providers->where('star', '>=', Input::get('star'));
+//
+//        if (Input::get('cat_id')) {
+//            $providers = $providers->whereHas('products', function ($q) {
+//                $q->where('category_id', Input::get('cat_id'));
+//            });
+//
+//            $data['category'] = Category::select('id', 'name')->find(Input::get('cat_id'));
+//        }
+//
+//
+//        $data['providers'] = $providers->get();
+//
+//        return Result::setData($data)->get();
+//    }
 
     //    public function updateProfile(Request $request)
 //    {

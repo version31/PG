@@ -18,9 +18,9 @@ class ApiRequest extends FormRequest
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         $response = new JsonResponse([
-            'status' => false,
+//            'status' => false,
             'errors' => $validator->errors(),
-            'data' => null,
+//            'data' => null,
         ] , 422);
 
         throw new \Illuminate\Validation\ValidationException($validator, $response);

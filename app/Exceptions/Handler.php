@@ -2,6 +2,9 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\ErrorResource;
+use Bavix\Wallet\Exceptions\BalanceIsEmpty;
+use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -46,6 +49,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+        if ($exception instanceof BalanceIsEmpty) {
+            return new ErrorResource(["wallet" => "بالانس کیف پول صفر است"]);
+        }
+
+        elseif ($exception instanceof InsufficientFunds) {
+            return new ErrorResource(["wallet" => "بالانس کیف پول کمتر از مقدار درخواستی جهت پرداخت است"]);
+        }
         return parent::render($request, $exception);
     }
 }

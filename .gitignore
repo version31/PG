@@ -18,3 +18,5 @@ public/uploads/thumbnail/*
 /resources
 /database/documents/*
 
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php

@@ -11,7 +11,8 @@ class RegisterRequest extends ApiRequest
         return [
             "mobile" => [
                 'required',
-                'string',
+                'iran_mobile',
+                'exists:users'
             ],
             "password" => [
                 'required',

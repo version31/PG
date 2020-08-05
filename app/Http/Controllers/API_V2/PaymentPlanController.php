@@ -10,6 +10,7 @@ use App\Product;
 use App\Star;
 use App\Storyable;
 use App\User;
+use App\Variable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Input\Input;
 
 class PaymentPlanController extends Controller
 {
-    //
+
 
     public function payment($planId, Request $request)
     {
@@ -28,8 +29,9 @@ class PaymentPlanController extends Controller
         $plan = Plan::where('id', $planId)->first();
         $user = User::where('id', $userId)->first();
 
-        $user->deposit($plan->price );
-        $user->withdraw($plan->price);
+//        $user->deposit($plan->price, ["Test By Programmer"]);
+
+        $user->withdraw($plan->price, [Variable::getValue($plan->type)]);
 
         switch ($plan->type) {
             case "BUY_PROVIDER_PLAN": #1

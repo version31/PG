@@ -64,4 +64,14 @@ Route::get('/wallet/transactions', 'WalletController@transactions');
 Route::post('/invitations', 'InvitationController@store');
 
 
+/*
+|--------------------------------------------------------------------------
+| Invitation
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/variables', 'VariableController@index');
+Route::get('/variables/{key}', 'VariableController@show');
+
+
 

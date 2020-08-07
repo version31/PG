@@ -70,6 +70,20 @@ class User extends Authenticatable implements Wallet
     }
 
 
+
+    public function following()
+    {
+        return $this->belongsToMany('App\User', 'bookmarkables', 'user_id', 'bookmarkable_id')
+            ->select('id', 'first_name', 'last_name');
+    }
+
+
+    public function followers()
+    {
+        return $this->belongsToMany('App\User', 'bookmarkables', 'bookmarkable_id', 'user_id')
+            ->select('id', 'first_name', 'last_name');
+    }
+
     public function requests()
     {
         return $this->hasMany('App\Request');
@@ -196,6 +210,11 @@ class User extends Authenticatable implements Wallet
     public function getBioHtmlAttribute($value)
     {
         return $this->bio;
+    }
+
+    public function catalogs()
+    {
+        return $this->hasMany(Catalog::class);
     }
 
 

@@ -75,3 +75,5 @@ Route::get('/variables/{key}', 'VariableController@show');
 
 
 
+Route::post('/wallet/increase/callback', 'PaymentController@callback');
+Route::post('/wallet/increase', 'PaymentController@do');

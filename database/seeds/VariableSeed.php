@@ -56,5 +56,24 @@ class VariableSeed extends Seeder
             'value' => "خرید بسته درج محصول",
         ]);
 
+        Variable::create([
+            'name' => "درصد هدیه بابت خرید",
+            'key' => "GIFT_BUY_PERCENT",
+            'value' => 12,
+        ]);
+
+
+        Variable::create([
+            'name' => "متن گزارش تراکنش بابت هدیه ی خرید",
+            'key' => "META_TRANSACTION_BUY_GIFT",
+            'value' => "خرید بسته درج محصول",
+        ]);
+
+        Variable::create([
+            'name' => "متن گزارش تراکنش بابت هدیه ی ثبت نام دوستان معرفی شده",
+            'key' => "META_TRANSACTION_REGISTER_GIFT",
+            'value' => "هدیه بابت معرفی دوستان",
+        ]);
+
     }
 }

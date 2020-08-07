@@ -29,7 +29,7 @@ class PaymentPlanController extends Controller
         $plan = Plan::where('id', $planId)->first();
         $user = User::where('id', $userId)->first();
 
-//        $user->deposit($plan->price, ["Test By Programmer"]);
+//        $user->deposit($plan->price);
 
         $user->withdraw($plan->price, [Variable::getValue($plan->type)]);
 

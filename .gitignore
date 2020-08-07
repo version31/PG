@@ -20,3 +20,4 @@ public/uploads/thumbnail/*
 
 /bootstrap/cache/packages.php
 /bootstrap/cache/services.php
+/public/uploads/catalogs/

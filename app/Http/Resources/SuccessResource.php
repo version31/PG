@@ -9,7 +9,7 @@ class SuccessResource extends JsonResource
 
     public $message;
 
-    public function __construct( $message = "رکورد با موفقیت اضافه شد")
+    public function __construct( $message = "عملیات با موفقیت انجام شد")
     {
         $this->message = $message;
     }

@@ -12,7 +12,7 @@ use Result;
 
 class ProviderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $providers = User::select('*')
             ->isProvider()
@@ -21,18 +21,18 @@ class ProviderController extends Controller
             ->with('stars');
 
 
-        if (Input::get('q'))
-            $providers = $providers->where('shop_name', 'like', '%' . Input::get('q') . '%');
+        if ($request->get('q'))
+            $providers = $providers->where('shop_name', 'like', '%' . $request->get('q') . '%');
 
-        if (Input::get('star'))
-            $providers = $providers->where('star', '>=', Input::get('star'));
+        if ($request->get('star'))
+            $providers = $providers->where('star', '>=', $request->get('star'));
 
-        if (Input::get('cat_id')) {
+        if ($request->get('cat_id')) {
             $providers = $providers->whereHas('products', function ($q) {
-                $q->where('category_id', Input::get('cat_id'));
+                $q->where('category_id', $request->get('cat_id'));
             });
 
-            $data['category'] = Category::select('id', 'name')->find(Input::get('cat_id'));
+            $data['category'] = Category::select('id', 'name')->find($request->get('cat_id'));
         }
 
 

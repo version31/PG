@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     //
-    use sh4Action;
+    use sh4Action, sh4Report;
 
     public function show($id)
     {

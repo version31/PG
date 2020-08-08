@@ -33,6 +33,8 @@ Route::get('providers', 'ProviderController@index'); #7
 
 
 
+Route::resource('products', 'ProductController')->only(['show','index']);
+
 
 
 /*
@@ -109,3 +111,6 @@ Route::get('users/{id}/catalogs', 'UserController@catalogs');
 
 
 Route::post('stories', 'StoryController@store');
+
+
+Route::post('products/report', 'ProductController@report');

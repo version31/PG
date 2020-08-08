@@ -21,6 +21,10 @@ class ProviderController extends Controller
             ->with('stars');
 
 
+        $p['page'] = $request->get('page') ?? 1;
+        $p['per'] = $request->get('per') ?? 1;
+        $p['offset'] = ($p['page'] - 1) * $p['per'];
+
         if ($request->get('q'))
             $providers = $providers->where('shop_name', 'like', '%' . $request->get('q') . '%');
 
@@ -28,15 +32,16 @@ class ProviderController extends Controller
             $providers = $providers->where('star', '>=', $request->get('star'));
 
         if ($request->get('cat_id')) {
-            $providers = $providers->whereHas('products', function ($q) {
+            $providers = $providers->whereHas('products', function ($q) use ($request) {
                 $q->where('category_id', $request->get('cat_id'));
             });
-
             $data['category'] = Category::select('id', 'name')->find($request->get('cat_id'));
         }
 
 
-//        return $providers->get();
+        if ($p['per'] && $p['page'])
+            $providers = $providers->offset($p['offset'])
+                ->limit($p['per']);
 
 
         return ProviderCollection::collection($providers->get());

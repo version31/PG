@@ -5,8 +5,10 @@ namespace App\Exceptions;
 use App\Http\Resources\ErrorResource;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -32,10 +34,12 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param  Throwable  $exception
      * @return void
+     *
+     * @throws Exception
      */
-    public function report(Exception $exception)
+    public function report(Throwable $exception)
     {
         parent::report($exception);
     }
@@ -43,11 +47,13 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  Throwable  $exception
+     * @return Response
+     *
+     * @throws Throwable
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
 
         if ($exception instanceof BalanceIsEmpty) {
@@ -58,5 +64,6 @@ class Handler extends ExceptionHandler
             return new ErrorResource(["wallet" => "بالانس کیف پول کمتر از مقدار درخواستی جهت پرداخت است"]);
         }
         return parent::render($request, $exception);
+
     }
 }

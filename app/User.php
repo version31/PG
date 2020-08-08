@@ -38,6 +38,11 @@ class User extends Authenticatable implements Wallet
         'password', 'remember_token', 'city_id', 'role_id', 'created_at', 'updated_at'
     ];
 
+
+    protected $casts = [
+        'verified' => 'boolean',
+    ];
+
     public function posts()
     {
         return $this->hasMany('App\Post');

@@ -30,6 +30,7 @@ class ProviderCollection extends V2Resource
             "latitude" => $this->latitude,
             "shop_expired_at" => $this->shop_expired_at,
             "stars" => $this->stars,
+            "verified" => $this->verified,
         ];
     }
 }

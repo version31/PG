@@ -105,3 +105,7 @@ Route::put('catalogs/{id}', 'CatalogController@update');
 
 
 Route::get('users/{id}/catalogs', 'UserController@catalogs');
+
+
+
+Route::post('stories', 'StoryController@store');

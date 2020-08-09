@@ -4,6 +4,7 @@ namespace App\Sh4;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\AfterLoginResource;
+use App\Http\Resources\ErrorResource;
 use App\SMSLog;
 use App\User;
 use Auth;
@@ -34,13 +35,11 @@ trait sh4Auth
 
     public function loginWithPassword(Request $request)
     {
-        if (Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')])) {
-            $user = Auth::user();
-            $result = $this->setResultAfterLogin($user);
-        } else {
-            $result = Result::setErrors(['unauthorised' => ["اطلاعات وارد شده صحیح نمی باشد"]]);
-        }
-        return $result->get();
+        if (!Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')]))
+            return new ErrorResource(['unauthorised' => ["اطلاعات وارد شده صحیح نمی باشد"]] , 401);
+
+        $user = Auth::user();
+        return $this->setResultAfterLogin($user );
 
 
 //

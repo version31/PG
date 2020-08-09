@@ -158,4 +158,12 @@ class DevController extends Controller
             echo ";";
     }
 
+
+    public function ip()
+    {
+
+        $data['ip'] = \Request::ip();
+        return $data;
+    }
+
 }

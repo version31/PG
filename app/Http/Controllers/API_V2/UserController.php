@@ -71,7 +71,29 @@ class UserController extends Controller
         if ($id == "current")
             $id = Auth::id();
 
-        $query = User::select('id','first_name','last_name')->where('id', $id)->with('catalogs')->first();
+        $query = User::select('id', 'first_name', 'last_name')->where('id', $id)->with('catalogs')->first();
+        return new BasicResource($query);
+    }
+
+
+    public function show($id)
+    {
+
+        if ($id == 'current')
+            $id = Auth::id();
+
+
+
+
+
+        $query = User::where('id', $id)->with(['city', 'role', 'products' => function ($query) {
+//        $query = User::where('id', $id)->with(['city', 'role', 'star', 'products' => function ($query) {
+            $query->with('addables');
+        }])->first();
+
+
+
+
         return new BasicResource($query);
     }
 

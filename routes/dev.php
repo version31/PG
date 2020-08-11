@@ -23,9 +23,21 @@ Route::get('/clear-all', function () {
 });
 
 Route::get('/migrate', function () {
-    $exitCode = Artisan::call('migrate');
+    $exitCode = Artisan::call('migrate --seed');
     echo '<h1>migrate is successful</h1>';
     echo '<br>';
     echo 'exitCode: ' . $exitCode;
     die;
 });
+
+
+
+Route::get('/migrate', function () {
+    $exitCode = Artisan::call('db:seed');
+    echo '<h1>migrate is successful</h1>';
+    echo '<br>';
+    echo 'exitCode: ' . $exitCode;
+    die;
+});
+
+

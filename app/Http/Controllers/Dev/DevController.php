@@ -27,6 +27,12 @@ class DevController extends Controller
      * to:   "$1" => \$this->$1,
      */
 
+    /**
+     * regex Input:
+     * from: Input::get\(\'(.*?)\'\)
+     * to:   \$request->('$1')
+     */
+
 
 
 

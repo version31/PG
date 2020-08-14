@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API_V2;
 
 use App\Category;
+use App\Http\Resources\BasicResource;
 use App\Http\Resources\ProviderCollection;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,5 +47,33 @@ class ProviderController extends Controller
         return ProviderCollection::collection($providers->get());
 
 
+    }
+
+
+    public function show($id)
+    {
+        $query = User::where('id',$id)->isProvider()
+
+           ->select('*')
+            ->where('id', $id)
+            ->with(['links', 'products' => function ($q) {
+                return $q->with('addables');
+            }])
+           ->first();
+
+        return new BasicResource($query);
+    }
+
+
+    public function stories($id)
+    {
+        $query = User::isProvider()
+            ->select('id', 'first_name', 'last_name')
+            ->where('id', $id)
+            ->with('stories')
+            ->first();
+
+
+        return new BasicResource($query);
     }
 }

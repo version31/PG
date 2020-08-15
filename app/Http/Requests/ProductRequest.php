@@ -31,32 +31,56 @@ class ProductRequest extends ApiRequest
                 break;
         }
 
-        return [
-            'type' => [
-                'required',
-                'in:picture,video'
-            ],
-            'title' => [
-                'required',
-                'string',
-                'min:6',
-                'max:200',
-            ],
 
-            'description' => [
-                'required',
-                'string',
-                'min:6',
-                'max:1000',
-            ],
-            'category_id' => [
-                'required',
-                'exists:categories,id'
-            ],
-            'media_path' => array_merge($media_path, $addition),
+        switch ($this->method()) {
+            case 'POST':
+                return [
+                    'type' => [
+                        'required',
+                        'in:picture,video'
+                    ],
+                    'title' => [
+                        'required',
+                        'string',
+                        'min:6',
+                        'max:200',
+                    ],
 
-            'addables.*' => $addition,
-        ];
+                    'description' => [
+                        'required',
+                        'string',
+                        'min:6',
+                        'max:1000',
+                    ],
+                    'category_id' => [
+                        'required',
+                        'exists:categories,id'
+                    ],
+                    'media_path' => array_merge($media_path, $addition),
+
+                    'addables.*' => $addition,
+                ];
+            case 'PUT':
+                return [
+                    'description' => [
+                        'required',
+                        'string',
+                        'min:6',
+                        'max:1000',
+                    ],
+                    'title' => [
+                        'required',
+                        'string',
+                        'min:6',
+                        'max:200',
+                    ],
+
+                ];
+            default:
+                break;
+        }
+
+
 
     }
 

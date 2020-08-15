@@ -42,7 +42,8 @@ class ProductController extends Controller
         }, 'addables'])->first();
 
 
-        $query->increment('count_visit');
+        if ($query)
+            $query->increment('count_visit');
 
         return new BasicResource($query);
 
@@ -145,12 +146,9 @@ class ProductController extends Controller
         return new SuccessResource();
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-
         $fields = $request->only(['title', 'description']);
-
-        Log::emergency($request->all()); #todo test
 
 
         if (Product::where('user_id', Auth::user()->id)->where('id', $id)->update($fields))
@@ -162,12 +160,12 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::where('user_id', Auth::user()->id)->where('id', $id)->first();
-        $cateId = $product->category_id;
         if ($product->delete()) {
 //            Auth::user()->increment('limit_insert_product'); @todo Mr kanani wants us changing to this state that limit insert doesnt increase.
             User::find(1)->decrement('count_product');
             Auth::user()->decrement('count_product');
-            Category::find($cateId)->decrement('count_product');
+            if ($product->category_id)
+                Category::find($product->category_id)->decrement('count_product');
             return new SuccessResource();
         }
     }

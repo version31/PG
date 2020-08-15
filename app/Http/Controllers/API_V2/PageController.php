@@ -9,10 +9,21 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $query =  Page::all();
-        return new BasicResource($query);
+
+        $p['page'] = $request->get('page') ?? 1;
+        $p['per'] = $request->get('per') ?? 1;
+        $p['offset'] = ($p['page'] - 1) * $p['per'];
+
+
+        $query =  Page::select('*');
+
+        if ($p['per'] && $p['page'])
+            $query = $query->offset($p['offset'])
+                ->limit($p['per']);
+
+        return new BasicResource($query->get());
     }
 
 

@@ -70,11 +70,14 @@ Route::middleware('auth:api')->group(function () {
     # Product
     #--------------------------------------------------
     Route::get('products', 'ProductController@index');
+    Route::get('explorer', 'ProductController@explorer');
     Route::get('products/{id}', 'ProductController@show');
     Route::post('products', 'ProductController@store');
     Route::put('products/action', 'ProductController@act');
     Route::put('products/{id}', 'ProductController@update'); #todo ???
     Route::delete('products/{id}', 'ProductController@destroy');
+    Route::post('products/report', 'ProductController@report');
+
 
 
 
@@ -105,18 +108,12 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # Products
     #--------------------------------------------------
-    Route::get('/products', 'ProductController@index');
-    Route::get('/products/{id}', 'ProductController@show');
-    Route::get('explorer', 'ProductController@explorer');
-    Route::post('products/report', 'ProductController@report');
 
 
     #--------------------------------------------------
     # Plans
     #--------------------------------------------------
     Route::get('/plans', 'PlanController@index');
-    Route::get('/plans/{id}', 'PlanController@show');
-
 
 
     #--------------------------------------------------
@@ -129,8 +126,9 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # Posts
     #--------------------------------------------------
+    Route::get('posts', 'PostController@index');
+    Route::get('posts/{id}', 'PostController@show');
     Route::put('posts/action', 'PostController@act');
-    Route::resource('posts', 'PostController');
 
 
 
@@ -160,8 +158,6 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # Plz Check
     #--------------------------------------------------
-    Route::get('/users/{userId}/roles/{roleId}', 'TestController@changeRole'); #todo test
-    Route::get('test', 'PaymentController@test');
     Route::get('clear-logs', 'UserController@deleteLog'); #todo for test
     Route::get('users/{id}/directs', 'UserController@directs'); #9
     Route::get('directs', 'DirectController@index'); #10

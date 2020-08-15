@@ -50,7 +50,7 @@ class ProductController extends Controller
     }
 
 
-    public function index(Request $request, $withCategory = false)
+    public function index(Request $request)
     {
         $products = new Product();
         $products = $products->with(['user', 'category'])
@@ -78,21 +78,20 @@ class ProductController extends Controller
             $products = $products->offset($p['offset'])
                 ->limit($p['per']);
 
-        if ($withCategory)
-            $data['categories'] = Category::select('id', 'media_path', 'name')->get();
+
+        $data = $products->get();
+
+        if ($request->get('flag') == 'explorer')
+            $data =
+                [
+                    'products' => $products->get(),
+                    'categories' => Category::select('id', 'media_path', 'name')->get()
+                ];
 
 
-        $data['products'] = $products->get();
-
-
-        return new BasicResource($products->get());
+        return new BasicResource($data);
     }
 
-
-    public function explorer()
-    {
-        return $this->index(true);
-    }
 
     public function store(ProductRequest $request)
     {

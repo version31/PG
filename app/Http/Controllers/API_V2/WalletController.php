@@ -50,7 +50,7 @@ class WalletController extends Controller
         ])
             ->leftJoin('users','transactions.payable_id','=','users.id')
             ->leftJoin('transfers','transactions.payable_id','=','users.id')
-            ->where('payable_id',1)
+            ->where('payable_id',Auth::id())
             ->groupBy('transactions.id')
             ->orderBy('transactions.id','Desc')
 

@@ -56,14 +56,13 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::get('/users/current', 'UserController@currentUser');
+    Route::get('users/{id}', 'UserController@show');
     Route::get('/users/current/show-status', 'UserController@showStatus');
     Route::put('users/current', 'UserController@updateProfile');
 
 
-    Route::get('providers', 'ProviderController@index');
-    Route::get('providers/{id}', 'ProviderController@show');
-    Route::get('providers/{id}/stories', 'ProviderController@stories');
-
+    Route::get('users', 'UserController@index');
+    Route::get('users/{id}/stories', 'UserController@stories');
 
 
     #--------------------------------------------------

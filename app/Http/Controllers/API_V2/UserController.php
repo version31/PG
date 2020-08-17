@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API_V2;
 
+use App\Category;
 use App\Facades\ResultData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\BasicResource;
+use App\Http\Resources\ProviderCollection;
 use App\Http\Resources\ShowStatusResource;
 use App\Link;
 use App\Sh4\sh4Action;
@@ -74,16 +76,6 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
-    {
-        $query = User::where('id', $id)->with(['city', 'role', 'products' => function ($query) {
-            $query->with('addables');
-        }])->first();
-
-
-        return new BasicResource($query);
-    }
-
     public function update(Request $request, $id)
     {
 
@@ -109,7 +101,6 @@ class UserController extends Controller
         $columns['shop_name'] = $request->get('brand');
 
 
-
         if ($this->checkPassword($request->get('password')) instanceof ResultData)
             return $this->checkPassword($request->get('password'));
         elseif (is_string($this->checkPassword($request->get('password'))))
@@ -125,7 +116,6 @@ class UserController extends Controller
 
         if (empty($columns['avatar']))
             $columns['avatar'] = \DB::table('users')->where('id', $id)->first()->avatar;
-
 
 
         User::where('id', $id)->update($columns);
@@ -187,6 +177,63 @@ class UserController extends Controller
 
         return $result;
     }
+
+
+    public function stories($id)
+    {
+        $query = User::isProvider()
+            ->select('id', 'first_name', 'last_name')
+            ->where('id', $id)
+            ->with('stories')
+            ->first();
+
+
+        return new BasicResource($query);
+    }
+
+
+    public function index(Request $request)
+    {
+        $query = User::select('*')
+            ->shopIsActive()
+            ->isActive()
+            ->orderBy('id','Desc')
+            ->with('stars');
+
+
+        if ($request->get('role') == "provider")
+            $query=$query->isProvider();
+
+
+        $p['page'] = $request->get('page') ?? 1;
+        $p['per'] = $request->get('per') ?? 1;
+        $p['offset'] = ($p['page'] - 1) * $p['per'];
+
+        if ($request->get('q'))
+            $query = $query->where('shop_name', 'like', '%' . $request->get('q') . '%');
+
+        if ($request->get('star'))
+            $query = $query->where('star', '>=', $request->get('star'));
+
+        if ($request->get('cat_id')) {
+            $query = $query->whereHas('products', function ($q) use ($request) {
+                $q->where('category_id', $request->get('cat_id'));
+            });
+            $data['category'] = Category::select('id', 'name')->find($request->get('cat_id'));
+        }
+
+
+        if ($p['per'] && $p['page'])
+            $query = $query->offset($p['offset'])
+                ->limit($p['per']);
+
+
+        return ProviderCollection::collection($query->get());
+
+
+    }
+
+
 
 
 }

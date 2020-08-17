@@ -233,7 +233,26 @@ class UserController extends Controller
 
     }
 
+    public function show($id)
+    {
 
+
+        $user = User::where('id', $id)->first();
+
+        $select = '*';
+
+        if ($user->presentable_fields)
+            $select = $user->presentable_fields;
+
+        $query = User::where('id', $id)->select($select)
+            ->with(['city', 'role', 'links', 'products' => function ($q) {
+                return $q->with('addables');
+            }])
+            ->first();
+
+
+        return new BasicResource($query);
+    }
 
 
 }

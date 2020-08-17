@@ -149,8 +149,7 @@ class ProductController extends Controller
     {
         $fields = $request->only(['title', 'description']);
 
-
-        if (Product::where('user_id', Auth::user()->id)->where('id', $id)->update($fields))
+        if (Product::where('user_id', Auth::id())->where('id', $id)->update($fields))
             return new SuccessResource();
 
     }

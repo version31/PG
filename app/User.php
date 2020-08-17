@@ -23,7 +23,9 @@ class User extends Authenticatable implements Wallet
      * @var array
      */
     protected $fillable = [
-        'shop_name', 'email', 'password', 'mobile', 'role_id', 'status', 'first_name', 'last_name', "shop_expired_at", "fax", "limit_insert_product"
+        'shop_name', 'email', 'password', 'mobile',
+        'role_id', 'status', 'first_name', 'last_name',
+        "shop_expired_at", "fax", "limit_insert_product",'presentable_fields'
     ];
 
 
@@ -41,7 +43,9 @@ class User extends Authenticatable implements Wallet
 
     protected $casts = [
         'verified' => 'boolean',
+        'presentable_fields' => 'array'
     ];
+
 
     public function posts()
     {
@@ -73,7 +77,6 @@ class User extends Authenticatable implements Wallet
     {
         return $this->morphedByMany('App\Product', 'bookmarkable')->select('id', 'title', 'media_path', 'count_like', 'type', 'products.user_id')->with(['addables', 'user']);
     }
-
 
 
     public function following()

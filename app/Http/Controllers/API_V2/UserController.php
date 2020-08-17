@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API_V2;
 use App\Category;
 use App\Facades\ResultData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PresentableFieldRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\BasicResource;
 use App\Http\Resources\ProviderCollection;
 use App\Http\Resources\ShowStatusResource;
+use App\Http\Resources\SuccessResource;
 use App\Link;
 use App\Sh4\sh4Action;
 use App\Sh4\sh4Auth;
@@ -58,14 +60,6 @@ class UserController extends Controller
     }
 
 
-    public function updateProfile(UserRequest $request)
-    {
-        $id = Auth::id();
-
-        return $this->update($request, $id);
-    }
-
-
     public function catalogs($id)
     {
         if ($id == "current")
@@ -76,8 +70,10 @@ class UserController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UserRequest $request)
     {
+
+        $id = Auth::id();
 
         $fields = [
             "avatar",
@@ -132,9 +128,22 @@ class UserController extends Controller
 
 
         $data['user'] = User::select(array_merge(['id', 'avatar'], $fields))->with('links')->where('id', $id)->first();
-        return Result::setData($data)->get();
+        return new SuccessResource();
     }
 
+
+    public function updatePresentableFields(PresentableFieldRequest $request )
+    {
+        $id = Auth::id();
+
+        $fields = $request->get('presentable_fields');
+
+
+
+        User::where('id', $id)->update(['presentable_fields' => $fields]);
+        return new SuccessResource();
+
+    }
 
     private function checkPassword($password)
     {
@@ -197,12 +206,12 @@ class UserController extends Controller
         $query = User::select('*')
             ->shopIsActive()
             ->isActive()
-            ->orderBy('id','Desc')
+            ->orderBy('id', 'Desc')
             ->with('stars');
 
 
         if ($request->get('role') == "provider")
-            $query=$query->isProvider();
+            $query = $query->isProvider();
 
 
         $p['page'] = $request->get('page') ?? 1;

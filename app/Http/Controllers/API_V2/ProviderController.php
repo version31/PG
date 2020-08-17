@@ -52,14 +52,20 @@ class ProviderController extends Controller
 
     public function show($id)
     {
-        $query = User::where('id',$id)->isProvider()
+        $user = User::find($id);
 
-           ->select('*')
-            ->where('id', $id)
+        $select = '*';
+
+        if ($user->presentable_fields)
+            $select = $user->presentable_fields;
+
+        $query = $user->isProvider()
+            ->select($select)
             ->with(['links', 'products' => function ($q) {
                 return $q->with('addables');
             }])
-           ->first();
+            ->first();
+
 
         return new BasicResource($query);
     }

@@ -158,7 +158,6 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     Route::get('clear-logs', 'UserController@deleteLog'); #todo for test
     Route::get('users/{id}/directs', 'UserController@directs'); #9
-    Route::get('directs', 'DirectController@index'); #10
 });
 
 

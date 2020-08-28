@@ -13,5 +13,7 @@ class Reportable extends Model
         "body",
         "reportable_id",
         "reportable_type",
+        "type",
+        "mobile",
     ];
 }

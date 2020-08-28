@@ -8,8 +8,14 @@ class ReportRequest extends ApiRequest
     public function rules()
     {
         return [
-            'body' => [
+            'type' => [
                 'required',
+                'string'
+            ],
+            'mobile' => [
+                'string'
+            ],
+            'body' => [
                 'string'
             ],
             'id' => [

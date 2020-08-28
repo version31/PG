@@ -38,7 +38,9 @@ trait sh4Report
             'user_id' => Auth::id(),
             'reportable_type' => $models[get_class($this)],
             'reportable_id' => $request->get("id"),
-            "body" => $request->get("body")
+            "body" => $request->get("body"),
+            "mobile" => $request->get("mobile"),
+            "type" => $request->get("type"),
         ]);
 
 

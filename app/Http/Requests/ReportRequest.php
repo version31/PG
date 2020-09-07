@@ -17,9 +17,6 @@ class ReportRequest extends ApiRequest
             ],
             'body' => [
                 'string'
-            ],
-            'id' => [
-                'required'
             ]
 
         ];

@@ -88,5 +88,8 @@ class AppServiceProvider extends ServiceProvider
 //        View::share('countStarPlan', $countStarPlan);
 //        View::share('countPromotePlan', $countPromotePlan);
 
+
+        \Schema::defaultStringLength(191);
+
     }
 }

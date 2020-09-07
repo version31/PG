@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Afracode\Statistic\App\Http\Middleware\TrackMiddleware;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CanProviderSendProduct;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -22,6 +23,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        TrackMiddleware::class
     ];
 
     /**

@@ -12,7 +12,7 @@ class RegisterRequest extends ApiRequest
             "mobile" => [
                 'required',
                 'iran_mobile',
-                'exists:users'
+                'unique:users'
             ],
             "password" => [
                 'required',

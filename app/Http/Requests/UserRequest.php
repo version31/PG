@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Auth;
 
 class UserRequest extends ApiRequest
 {
@@ -31,12 +33,14 @@ class UserRequest extends ApiRequest
             "email" => [
                 'required',
                 'email',
-                'unique:users'.\Auth::id()
+//                'unique:users,'.\Auth::id()
+                Rule::unique('users')->ignore(Auth::id())
             ],
             "mobile" => [
                 'required',
-                'iran_mobile',
-                'unique:users'.\Auth::id()
+//                'iran_mobile',
+//                'unique:users,'.\Auth::id()
+                 Rule::unique('users')->ignore(Auth::id())
             ],
             "phone" => [
                 'iran_phone',
@@ -50,7 +54,6 @@ class UserRequest extends ApiRequest
                 'exists:cities,id',
             ],
             "address" => [
-                'required',
                 'string',
             ],
             'latitude' => [

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API_V2;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MoneyRequest;
 use App\Http\Requests\TransferRequest;
+use App\Http\Resources\BasicResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\WalletTransactionsCollection;
 use App\MoneyRequests;
@@ -39,14 +40,14 @@ class WalletController extends Controller
             return new SuccessResource();
     }
 
-
     public function transactions()
     {
+//        return Auth::id();
         $query = Transaction::select([
             'transactions.created_at','transactions.id','transactions.type','transactions.amount','transactions.meta',
 //            'users.mobile','users.first_name','users.last_name',
             'users.id as user__id',
-            'transfers.to_id','transfers.from_id'
+            'transfers.to_id','transfers.from_id','payable_id'
         ])
             ->leftJoin('users','transactions.payable_id','=','users.id')
             ->leftJoin('transfers','transactions.payable_id','=','users.id')
@@ -58,6 +59,14 @@ class WalletController extends Controller
         ;
 
         return WalletTransactionsCollection::collection($query);
+    }
+
+    public function balance()
+    {
+        $query = [
+            "balance" => Auth::user()->balance
+        ];
+        return new BasicResource($query);
     }
 
 

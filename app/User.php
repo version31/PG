@@ -15,7 +15,7 @@ class User extends Authenticatable implements Wallet
     use HasApiTokens, Notifiable, HasRoles, HasWallet;
 
 
-    protected $guard_name = 'api';
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.

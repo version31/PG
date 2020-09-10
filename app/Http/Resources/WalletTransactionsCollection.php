@@ -12,7 +12,8 @@ class WalletTransactionsCollection extends V2Resource
         return [
             "id" => $this->id,
             "created_at" => $this->created_at,
-//            "type" => $this->type,
+            "status" => null,
+            "type" => "wallet",
             "amount" => $this->amount,
             "description" => $this->meta[0] ?? null,
 

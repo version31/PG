@@ -26,3 +26,4 @@ public/uploads/thumbnail/*
 resources/*
 !resources/views/components
 
+/packages/*

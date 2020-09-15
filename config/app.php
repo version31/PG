@@ -232,6 +232,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Result'=> App\Facades\ResultData::class,
 
+        'Payment' => Shetabit\Payment\Facade\Payment::class,
+
     ],
 
 ];

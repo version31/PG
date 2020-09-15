@@ -8,7 +8,14 @@ class Payment extends Model
 {
     protected $table = 'gateway_transactions';
 
-    protected $fillable = ['user_id' , 'details' , 'plan_id','related_id'];
+    protected $fillable = [
+        'port' ,
+        'price' ,
+        'ref_id',
+        'status',
+        'ip',
+        'user_id',
+        ];
 
     protected $casts = [
         'details' => 'array',

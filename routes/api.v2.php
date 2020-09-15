@@ -18,6 +18,9 @@ Route::get('/variables', 'VariableController@index');
 Route::get('/variables/{key}', 'VariableController@show');
 
 
+Route::any('callback', 'ShetabController@callback'); #@todo Do test
+
+
 Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # Activities
@@ -78,8 +81,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/wallet/money-request', 'WalletController@moneyRequest');
     Route::get('/wallet/transactions', 'WalletController@transactions');
     Route::get('/wallet/buy-plans/{planId}', 'PaymentPlanController@payment');
-    Route::post('/wallet/increase', 'PaymentController@do');                #@todo Do test
-    Route::post('/wallet/increase/callback', 'PaymentController@callback'); #@todo Do test
+    Route::post('/wallet/increase', 'ShetabController@do');                #@todo Do test
+
 
 
     #--------------------------------------------------

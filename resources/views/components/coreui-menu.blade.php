@@ -3,9 +3,9 @@
         @if( isset($item->permission) ? Gate::check($item->permission) : true)
 
             <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link c-active" href="{{$item->link}}">
+                <a class="c-sidebar-nav-link c-active" href="/{{$item->href}}">
                     <i class="fa {{$item->icon}}"></i>
-                    <span>{{$item->title}}</span>
+                    <span>{{menuName($item)}}</span>
                 </a>
             </li>
         @endif

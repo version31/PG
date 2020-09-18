@@ -2,13 +2,13 @@
     <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar"
             data-class="c-sidebar-show">
         <svg class="c-icon c-icon-lg">
-            <use xlink:href="afra/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+            <use xlink:href=""></use>
         </svg>
     </button>
     <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar"
             data-class="c-sidebar-lg-show" responsive="true">
         <svg class="c-icon c-icon-lg">
-            <use xlink:href="afra/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+            <use xlink:href=""></use>
         </svg>
     </button>
     <ul class="c-header-nav ml-auto mr-4">
@@ -22,13 +22,13 @@
                 <div class="dropdown-header bg-light py-2"><strong>پنل کاربری</strong></div>
                 <a class="dropdown-item" href="/admin/users/admin/edit">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="afra/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                        <use xlink:href=""></use>
                     </svg>
                     پروفایل</a>
 
                 <a class="dropdown-item" href="/admin/users/current/password">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="afra/vendors/@coreui/icons/svg/free.svg#cil-settings"></use>
+                        <use xlink:href=""></use>
                     </svg>
                     تغییر پسورد</a>
                 <div class="dropdown-divider"></div>
@@ -37,7 +37,7 @@
                    onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                     <svg class="c-icon mr-2">
-                        <use xlink:href="afra/vendors/@coreui/icons/svg/free.svg#cil-account-logout"></use>
+                        <use xlink:href=""></use>
                     </svg>
                     خروج</a>
 

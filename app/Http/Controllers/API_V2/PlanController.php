@@ -26,6 +26,13 @@ class PlanController extends Controller
         }
 
 
+        $groupBy = $request->get("groupBy");
+        if ($groupBy) {
+             $plans = $plans->groupBy('type')->pluck('type');
+            return new BasicResource($plans);
+        }
+
+
         return new BasicResource($plans->get());
 
     }

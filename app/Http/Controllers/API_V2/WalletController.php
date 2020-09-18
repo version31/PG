@@ -21,9 +21,10 @@ class WalletController extends Controller
     {
 
         $current = Auth::user();
+
         $user = User::where('mobile', $request->get('mobile'))->first();
 
-        $current->transfer($user, $request->get('price'));
+        $current->transfer($user, $request->get('price') , ["انتقال"]);
 
         return new SuccessResource("انتقال با موفقیت انجام گرفت");
     }

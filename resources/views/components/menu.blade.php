@@ -26,15 +26,12 @@
 
     @foreach($items as $item)
 
-
         @if( isset($item->permission) ? Gate::check($item->permission) : true)
             <li>
-                <a href="{{$item->link}}">
+                <a href="{{$item->href}}">
                     <i class="fa {{$item->icon}}"></i>
-                    <span>{{$item->title}}</span></a>
+                    <span>{{$item->name}}</span></a>
             </li>
         @endif
-
-
     @endforeach
 </ul>

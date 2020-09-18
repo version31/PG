@@ -25,4 +25,8 @@ class VariableController extends Controller
 
         return new BasicResource($query);
     }
+
+
+
+
 }

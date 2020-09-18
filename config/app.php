@@ -158,9 +158,10 @@ return [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
+        Spatie\TranslationLoader\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        \Afracode\CRUD\AfracodeServiceProvider::class,
 
 
 
@@ -178,8 +179,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ResultDataServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Iamfarhad\Validation\ValidationServiceProvider::class
+        Iamfarhad\Validation\ValidationServiceProvider::class,
 
+        Shetabit\Payment\Provider\PaymentServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -233,6 +236,7 @@ return [
         'Result'=> App\Facades\ResultData::class,
 
         'Payment' => Shetabit\Payment\Facade\Payment::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

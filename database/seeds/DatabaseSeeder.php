@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
 //         $this->call(RoleSeeder::class);
 //         $this->call(VariableSeed::class);
-         $this->call(PermissionSeed::class);
+//         $this->call(PermissionSeed::class);
+//         $this->call(MenuSeeder::class);
     }
 }

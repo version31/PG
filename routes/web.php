@@ -69,3 +69,30 @@ Route::prefix('admin')->middleware('admin')->namespace('Admin')->name('admin.')-
     /*routes for provider requests*/
     Route::resource('providerRequests', 'ProviderRequestController');
 });
+
+
+Route::resource('users', 'Crud\UserController');
+Route::resource('providers', 'Crud\ProviderController');
+Route::resource('pages', 'Crud\PageController');
+Route::resource('posts', 'Crud\PostController');
+Route::resource('products', 'Crud\ProductController');
+Route::resource('categories', 'Crud\CategoryController');
+Route::resource('services', 'Crud\ServiceController');
+Route::resource('stories', 'Crud\StoryController');
+Route::resource('plans', 'Crud\PlanController');
+Route::resource('variables', 'Crud\VariableController');
+Route::resource('transactions', 'Crud\TransactionController');
+Route::resource('reports', 'Crud\ReportController');
+Route::resource('languages', 'Crud\LanguageController');
+Route::resource('payments', 'Crud\GatewayController');
+Route::resource('menu', 'Crud\MenuController');
+
+
+Route::get('datatable/products', 'Crud\ProductController@datatable');
+Route::get('datatable/services', 'Crud\ServiceController@datatable');
+
+
+
+Route::get('uploads/{file}', function ($file) {
+    return Storage::disk('public')->response('/uploads/'.$file);
+});

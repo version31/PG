@@ -16,4 +16,10 @@ class Reportable extends Model
         "type",
         "mobile",
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+
+    }
 }

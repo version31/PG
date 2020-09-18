@@ -3,8 +3,10 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Bavix\Wallet\Traits\HasWallet;
@@ -23,9 +25,9 @@ class User extends Authenticatable implements Wallet
      * @var array
      */
     protected $fillable = [
-        'shop_name', 'email', 'password', 'mobile',
+        'shop_name', 'email', 'password', 'mobile', 'avatar',
         'role_id', 'status', 'first_name', 'last_name',
-        "shop_expired_at", "fax", "limit_insert_product",'presentable_fields'
+        "shop_expired_at", "fax", "limit_insert_product", 'presentable_fields'
     ];
 
 
@@ -102,11 +104,11 @@ class User extends Authenticatable implements Wallet
         return $this->belongsTo('App\City');
     }
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-
-    }
+    //    public function role()
+    //    {
+    //        return $this->belongsTo(Role::class);
+    //
+    //    }
 
 
     public function likes()
@@ -141,10 +143,7 @@ class User extends Authenticatable implements Wallet
     }
 
 
-    public function getAvatarAttribute($value)
-    {
-        return config('app.url') . $this->pathUpload . $value;
-    }
+
 
 
     public function scopeIsUser($query)
@@ -165,10 +164,10 @@ class User extends Authenticatable implements Wallet
     }
 
 
-//    public function getStarAttribute()
-//    {
-//        return 3;
-//    }
+    //    public function getStarAttribute()
+    //    {
+    //        return 3;
+    //    }
 
     public function scopeIsActive($query)
     {
@@ -224,6 +223,9 @@ class User extends Authenticatable implements Wallet
     {
         return $this->hasMany(Catalog::class);
     }
+
+
+
 
 
 }

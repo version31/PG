@@ -5,15 +5,35 @@ namespace App;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
+
+    use InteractsWithMedia;
+
     protected $hidden = ['created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'category_id', 'pivot'];
 
 
-    protected $fillable = ['title', 'description', 'promote_expired_at'];
+    protected $fillable = [
+        "category_id",
+        "confirmed_at",
+        "count_like",
+        "count_visit",
+        "created_at",
+        "description",
+        "id",
+        "media_path",
+        "promote_expired_at",
+        "status",
+        "title",
+        "type",
+        "updated_at",
+        "user_id"
+    ];
 
-    protected $appends = ['bookmarked', 'liked', 'thumbnail', 'is_yours' , 'description_html'];
+    protected $appends = ['bookmarked', 'liked', 'thumbnail', 'is_yours', 'description_html'];
 
 
     public function addHidden($attributes = null)
@@ -48,11 +68,7 @@ class Product extends Model
     }
 
 
-    public function getMediaPathAttribute($value)
-    {
 
-        return config('app.url') . $value;
-    }
 
     public function getThumbnailAttribute()
     {

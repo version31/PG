@@ -11,14 +11,14 @@ class Service extends Model
 
 
 
-    protected $hidden = ['created_at', 'updated_at' , 'user_id'];
+//    protected $hidden = ['created_at', 'updated_at' , 'user_id'];
 
 
     protected $appends = ['thumbnail','body_html'];
 
     public function user()
     {
-        return $this->belongsTo('App\Users');
+        return $this->belongsTo(User::class);
     }
 
     public function requests()

@@ -40,6 +40,13 @@ class Page extends Model
 {
     //
 
+    protected $fillable = [
+        'title',
+        'slug',
+        'body',
+        'media_path'
+    ];
+
     public function getMediaPathAttribute($value)
     {
         return config('app.url') . $value;

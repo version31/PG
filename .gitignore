@@ -27,3 +27,8 @@ resources/*
 !resources/views/components
 
 /packages/*
+/public/packages/
+/public/afra/assets/
+/public/afra/css/
+/public/afra/js/
+/public/afra/vendors/

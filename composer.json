@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "afracode/statistic": "dev-master",
+        "barryvdh/laravel-debugbar": "^3.5",
         "bavix/laravel-wallet": "^5.2",
         "doctrine/dbal": "^2.9",
         "facade/ignition": "^2.0",
@@ -26,8 +27,10 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
         "rap2hpoutre/laravel-log-viewer": "^1.0",
+        "shetabit/payment": "^4.0",
         "spatie/laravel-medialibrary": "^8.0.0",
         "spatie/laravel-permission": "^3.8",
+        "spatie/laravel-translation-loader": "^2.6",
         "yajra/laravel-datatables-oracle": "^9.10"
     },
     "require-dev": {

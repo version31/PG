@@ -23,9 +23,11 @@ class ProviderController extends CrudController
     public function setupIndex()
     {
         $this->crud->setColumn('id');
-        $this->crud->setColumn('name');
+        $this->crud->setColumn('last_name')->editColumn(function ($row) {
+            return $row->first_name . " " . $row->last_name;
+        });
         $this->crud->setColumn('avatar')->editColumn(function ($row) {
-            return view('crud::partials.image', ['path' => $row->avatar , 'alt' => $row->name]);
+            return view('crud::partials.image', ['path' => $row->avatar, 'alt' => $row->name]);
         });
         $this->crud->setColumn('shop_name');
         $this->crud->setColumn('shop_expired_at')->format('shamsi');
@@ -105,7 +107,6 @@ class ProviderController extends CrudController
         );
 
 
-
         $this->crud->setField(
             [
                 'name' => 'gender',
@@ -122,8 +123,6 @@ class ProviderController extends CrudController
 
             ]
         );
-
-
 
 
         $this->crud->setField(
@@ -194,15 +193,12 @@ class ProviderController extends CrudController
         );
 
 
-
-
     }
 
 
     public function setupEdit()
     {
         $this->setupCreate();
-
 
 
         $this->crud->setField(
@@ -219,7 +215,7 @@ class ProviderController extends CrudController
             [
                 'type' => 'email',
                 'name' => 'email',
-                'validation' => 'required|unique:users,email,'. $this->crud->row->id,
+                'validation' => 'required|unique:users,email,' . $this->crud->row->id,
 
             ]
         );
@@ -235,8 +231,6 @@ class ProviderController extends CrudController
 
 
     }
-
-
 
 
 }

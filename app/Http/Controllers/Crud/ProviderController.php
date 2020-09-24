@@ -23,7 +23,7 @@ class ProviderController extends CrudController
     public function setupIndex()
     {
         $this->crud->setColumn('id');
-        $this->crud->setColumn('last_name')->editColumn(function ($row) {
+        $this->crud->setColumn('user')->editColumn(function ($row) {
             return $row->first_name . " " . $row->last_name;
         });
         $this->crud->setColumn('avatar')->editColumn(function ($row) {
@@ -33,6 +33,11 @@ class ProviderController extends CrudController
         $this->crud->setColumn('shop_expired_at')->format('shamsi');
         $this->crud->setColumn('mobile');
         $this->crud->setColumn('action');
+
+
+        $this->crud->addFilter('user', function ($query, $keyword) {
+            $query->whereRaw("CONCAT(first_name,' ',last_name) like ?", ["%{$keyword}%"]);
+        });
     }
 
 

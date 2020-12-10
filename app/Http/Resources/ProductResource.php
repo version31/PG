@@ -21,6 +21,8 @@ class ProductResource extends JsonResource
             "count_like" => $this->count_like,
             "count_visit" => $this->count_visit,
             "media_path" => $this->media_path,
+            "price" => $this->price,
+            "shipping" => $this->shipping,
             "media" => MediaCollection::collection($this->whenLoaded('media')),
             "user" => new UserResource($this->whenLoaded('user')),
 //            "status" => $this->status,

@@ -19,6 +19,15 @@ class ProductRequest extends ApiRequest
                         'min:6',
                         'max:200',
                     ],
+
+                    'price' => [
+                        'integer',
+                    ],
+
+                    'shipping' => [
+                        'integer',
+                    ],
+
                     'description' => [
                         'required',
                         'string',

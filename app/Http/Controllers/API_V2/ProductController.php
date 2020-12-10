@@ -104,6 +104,8 @@ class ProductController extends Controller
             "title",
             "description",
             "category_id",
+            "price",
+            "shipping",
         ];
 
         $columns = $request->only($fields);

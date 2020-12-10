@@ -13,7 +13,8 @@ class Product extends Model implements HasMedia
 
     use InteractsWithMedia;
 
-    protected $hidden = ['created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'category_id', 'pivot'];
+    protected $hidden = [
+        'created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'category_id', 'pivot'];
 
 
     protected $fillable = [
@@ -30,7 +31,9 @@ class Product extends Model implements HasMedia
         "title",
         "type",
         "updated_at",
-        "user_id"
+        "user_id",
+        'price',
+        'shipping',
     ];
 
     protected $appends = ['bookmarked', 'liked', 'thumbnail', 'is_yours', 'description_html'];

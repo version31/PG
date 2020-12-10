@@ -15,6 +15,7 @@ class Shop extends Model
         'type',
         'product_id',
         'day',
+        'new_price',
     ];
 
     protected static function booted()

@@ -59,7 +59,7 @@ class ProductController extends Controller
             ->orderBy('id', 'Desc')
             ->where('status', '>', 0)
             ->whereHas("user", function ($q) {
-                $q->where("status", ">", 0)->where('shop_expired_at', ">", Carbon::now());
+                $q->where("status", ">", 0);
             });
 
 
@@ -129,7 +129,9 @@ class ProductController extends Controller
 
         if ($request->has('audio'))
             $newRow
-                ->addMedia($request->file('audio'))->toMediaCollection();
+                ->addMedia($request->file('audio'))
+                ->withCustomProperties(['type' => 'audio'])
+                ->toMediaCollection();
 
 
 

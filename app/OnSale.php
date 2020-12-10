@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class OnSale extends Shop
 {
+    protected $fillable = [
+        'type',
+        'product_id',
+        'day',
+        'new_price',
+        'published_at',
+    ];
 
     protected static function booted()
     {

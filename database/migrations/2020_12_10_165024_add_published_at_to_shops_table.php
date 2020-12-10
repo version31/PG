@@ -15,7 +15,7 @@ class AddPublishedAtToShopsTable extends Migration
     {
         Schema::table('shops', function (Blueprint $table) {
             //
-            $table->dateTime('published_at')->nullable();
+            $table->date('published_at')->nullable();
         });
     }
 

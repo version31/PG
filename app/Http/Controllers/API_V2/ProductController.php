@@ -43,7 +43,6 @@ class ProductController extends Controller
         }, 'media'])->first();
 
 
-
         if ($query)
             $query->increment('count_visit');
 
@@ -119,15 +118,16 @@ class ProductController extends Controller
         $newRow = Product::create($columns);
 
 
-        # @todo validation gozashte shavad
-        if ($request->has('media')) {
-            $files = $request->file('media');
-            foreach ($files as $media) {
+        if ($request->has('media'))
+            foreach ($request->file('media') as $media)
                 $newRow
                     ->addMedia($media)
                     ->toMediaCollection();
-            }
-        }
+
+
+        if ($request->has('audio'))
+            $newRow
+                ->addMedia($request->file('audio'))->toMediaCollection();
 
 
 
@@ -155,7 +155,7 @@ class ProductController extends Controller
     {
         $product = Product::where('user_id', Auth::user()->id)->where('id', $id)->first();
         if ($product->delete()) {
-//            Auth::user()->increment('limit_insert_product'); @todo Mr kanani wants us changing to this state that limit insert doesnt increase.
+            //            Auth::user()->increment('limit_insert_product'); @todo Mr kanani wants us changing to this state that limit insert doesnt increase.
             User::find(1)->decrement('count_product');
             Auth::user()->decrement('count_product');
             if ($product->category_id)

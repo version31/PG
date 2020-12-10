@@ -34,9 +34,13 @@ class ProductRequest extends ApiRequest
                         'max:8000000',
                         'mimes:jpeg,png,jpg,gif,svg',
                     ],
+
+                    'audio' => [
+//                        'mimes:mp4,ogg,qt,wav,mp3',
+                    ],
                     'media.*' => [
                         'max:8000000',
-                        'mimes:mp4,mov,ogg,qt,wav,mp3,jpeg,png,jpg,gif,svg',
+                        'mimes:mp4,mov,ogg,jpeg,png,jpg,gif,svg',
                     ]
 
 

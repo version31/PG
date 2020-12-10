@@ -9,6 +9,7 @@ use App\Http\Requests\Product2Request;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\BasicResource;
 use App\Http\Resources\ErrorResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\SuccessResource;
 use App\Product;
 use App\Sh4\sh4Action;
@@ -39,13 +40,14 @@ class ProductController extends Controller
 
         $query = Product::where('id', $id)->with(['user' => function ($q) {
             return $q->with('links');
-        }, 'addables'])->first();
+        }, 'media'])->first();
+
 
 
         if ($query)
             $query->increment('count_visit');
 
-        return new BasicResource($query);
+        return new ProductResource($query);
 
     }
 
@@ -96,43 +98,37 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
 
-
         $catId = $request->get('category_id');
 
-        $i = 0; //first number of counter
-
-        $addables = [];
 
         $fields = [
             "title",
             "description",
             "category_id",
-            "type",
         ];
 
         $columns = $request->only($fields);
 
 
         if ($request->hasFile('media_path'))
-            $columns['media_path'] = $this->storeMedia($request->file('media_path'), $request->get('type'));
+            $columns['media_path'] = $this->storeMedia($request->file('media_path'), 'picture');
 
 
         $columns['user_id'] = Auth::id();
         $productId = Product::insertGetId($columns);
+        $newRow = Product::create($columns);
 
 
-        if ($request->hasFile('addables'))
-            foreach ($request->file('addables') as $media2) {
-                $addables['media_path'] = $this->storeMedia($media2, $request->get('type'));
-                $addables['addable_type'] = Product::class;
-                $addables['type'] = $request->get('type');
-                $addables['addable_id'] = $productId;
-                Addable::insert($addables);
-                ++$i;
-
-                if ($i >= $this->maxAllowedVideos)
-                    break;
+        # @todo validation gozashte shavad
+        if ($request->has('media')) {
+            $files = $request->file('media');
+            foreach ($files as $media) {
+                $newRow
+                    ->addMedia($media)
+                    ->toMediaCollection();
             }
+        }
+
 
 
         if ($productId) {

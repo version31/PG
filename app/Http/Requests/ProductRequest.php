@@ -10,42 +10,15 @@ class ProductRequest extends ApiRequest
     public function rules()
     {
 
-        $addition = [];
-
-        $media_path = [
-            'required',
-            'max:8000000',
-        ];
-
-        switch ($this->type) {
-            case "video":
-
-                $addition = [
-                    'mimes:mp4,mov,ogg,qt'
-                ];
-                break;
-            case "picture":
-                $addition = [
-                    'mimes:jpeg,png,jpg,gif,svg',
-                ];
-                break;
-        }
-
-
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'type' => [
-                        'required',
-                        'in:picture,video'
-                    ],
                     'title' => [
                         'required',
                         'string',
                         'min:6',
                         'max:200',
                     ],
-
                     'description' => [
                         'required',
                         'string',
@@ -56,9 +29,17 @@ class ProductRequest extends ApiRequest
                         'required',
                         'exists:categories,id'
                     ],
-                    'media_path' => array_merge($media_path, $addition),
+                    'media_path' => [
+                        'required',
+                        'max:8000000',
+                        'mimes:jpeg,png,jpg,gif,svg',
+                    ],
+                    'media.*' => [
+                        'max:8000000',
+                        'mimes:mp4,mov,ogg,qt,wav,mp3,jpeg,png,jpg,gif,svg',
+                    ]
 
-                    'addables.*' => $addition,
+
                 ];
             case 'PUT':
                 return [
@@ -79,7 +60,6 @@ class ProductRequest extends ApiRequest
             default:
                 break;
         }
-
 
 
     }

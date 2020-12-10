@@ -5,12 +5,6 @@
 |--------------------------------------------------------------------------
 |
 */
-Route::group([
-    'namespace' => 'Dev',
-    'prefix' => 'dev',
-], function ($router) {
-    require base_path('routes/dev.php');
-});
 
 
 Route::prefix('admin')->group(function () {

@@ -2,6 +2,15 @@
 
 use Illuminate\Http\Request;
 
+
+Route::group([
+    'namespace' => 'Dev',
+    'prefix' => 'dev',
+], function ($router) {
+    require base_path('routes/dev.php');
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | V1

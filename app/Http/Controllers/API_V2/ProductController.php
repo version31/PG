@@ -132,7 +132,7 @@ class ProductController extends Controller
 
 
         if ($productId) {
-            Auth::user()->decrement('limit_insert_product');
+//            Auth::user()->decrement('limit_insert_product');
             User::find(1)->increment('count_product');
             Category::find($catId)->increment('count_product');
             Auth::user()->increment('count_product');

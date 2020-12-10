@@ -15,11 +15,11 @@ class CanProviderSendProduct
     {
         $errors = [];
 
-        if (Auth::user()->shop_expired_at < Carbon::now())
-            $errors[] = ['shop_expired' => 'فروشگاه شما منقضی شده است. لطفا فروشگاه خود را تمدید نمایید'];
-
-        if (Auth::user()->limit_insert_product < 1)
-            $errors[] = ['limit_insert_product' => 'لطفا بسته ی درج محصول را تمدید نمایید.'];
+//        if (Auth::user()->shop_expired_at < Carbon::now())
+//            $errors[] = ['shop_expired' => 'فروشگاه شما منقضی شده است. لطفا فروشگاه خود را تمدید نمایید'];
+//
+//        if (Auth::user()->limit_insert_product < 1)
+//            $errors[] = ['limit_insert_product' => 'لطفا بسته ی درج محصول را تمدید نمایید.'];
 
 
         if (Auth::user()->status < 1)

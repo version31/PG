@@ -8,6 +8,7 @@ use App\Http\Resources\BasicResource;
 use App\Http\Resources\OnSaleCollection;
 use App\Http\Resources\SuccessResource;
 use App\OnSale;
+use App\Variable;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Illuminate\Http\Request;
@@ -15,23 +16,14 @@ use Illuminate\Http\Request;
 class OnSaleController extends Controller
 {
 
-    public $openTime;
-    public $limitProduct;
-
-    public function __construct()
-    {
-        $this->openTime = '00:00:01';
-        $this->limitProduct = 100;
-    }
-
     public function index(Request $request)
     {
-        $onSaleTime = new Carbon(Carbon::now()->toDateString() . $this->openTime);
+        $onSaleTime = new Carbon(Carbon::now()->toDateString() . Variable::val('OnSaleOpenTime'));
 
-        if (Carbon::now()->format('H') < date('H', strtotime($this->openTime)))
+        if (Carbon::now()->format('H') < date('H', strtotime(Variable::val('OnSaleOpenTime'))))
             $onSaleTime->subDay();
 
-        $query = OnSale::limit($this->limitProduct)->orderBy('shops.id', 'desc')
+        $query = OnSale::limit(Variable::val('OnSaleLimitProduct'))->orderBy('shops.id', 'desc')
             ->where('shops.published_at', $onSaleTime->toDateString());
 
 

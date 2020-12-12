@@ -15,10 +15,12 @@ use App\Product;
 use App\Sh4\sh4Action;
 use App\Sh4\sh4Report;
 use App\User;
+use App\Variable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Auth;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProductController extends Controller
 {
@@ -26,17 +28,19 @@ class ProductController extends Controller
     use sh4Action, sh4Report;
 
 
-    /**
-     * ProductController constructor.
-     */
+    private $mediaTypes;
+
     public function __construct()
     {
 
         $this->middleware('canProviderSendProduct', ['only' => ['store']]);
     }
 
+
+
     public function show($id)
     {
+        return User::find(976)->balance;
 
         $query = Product::where('id', $id)->with(['user' => function ($q) {
             return $q->with('links');
@@ -134,9 +138,8 @@ class ProductController extends Controller
                 ->toMediaCollection();
 
 
-
         if ($productId) {
-//            Auth::user()->decrement('limit_insert_product');
+            //            Auth::user()->decrement('limit_insert_product');
             User::find(1)->increment('count_product');
             Category::find($catId)->increment('count_product');
             Auth::user()->increment('count_product');
@@ -168,5 +171,57 @@ class ProductController extends Controller
         }
     }
 
+    public function onSaleDetail ($id)
+    {
+        return new BasicResource($this->calculateOnSalePrice($id));
+    }
+
+
+
+
+    public function calculateOnSalePrice($id)
+    {
+
+        $this->setMediaTypes($id);
+
+        $totalPrice = Variable::val('OnSaleDefaultPrice');
+
+        if (in_array('video', $this->mediaTypes))
+            $totalPrice += Variable::val('OnSaleVideoPrice');
+
+        if (in_array('audio', $this->mediaTypes))
+            $totalPrice += Variable::val('OnSaleAudioPrice');
+
+            $types = [
+                'hasVideo' => in_array('video', $this->mediaTypes),
+                'hasAudio' => in_array('audio', $this->mediaTypes),
+                'onSale_default_price' => Variable::val('OnSaleDefaultPrice'),
+                'onSale_audio_price' => Variable::val('OnSaleAudioPrice'),
+                'onSale_video_price' => Variable::val('OnSaleVideoPrice'),
+                'onSale_price_for_this_product' => $totalPrice,
+                'owner_balance' => (int) User::find(Product::find($id)->user_id)->balance,
+                'owner_id' =>  Product::find($id)->user_id,
+            ];
+
+
+        return $types;
+    }
+
+
+    private function setMediaTypes($id)
+    {
+        $types = [];
+
+        $memTypes = Media::where('model_type', Product::class)->where('model_id', $id)->pluck('mime_type')->toArray();
+        $memTypes = array_unique($memTypes);
+
+
+        foreach ($memTypes as $memType) {
+
+            $types[] = explode("/", $memType)[0];
+        }
+
+        $this->mediaTypes = $types;
+    }
 
 }

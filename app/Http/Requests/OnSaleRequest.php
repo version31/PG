@@ -25,7 +25,7 @@ class OnSaleRequest extends ApiRequest
 
                     'product_id' => [
                         'required',
-//                        'exists:products',
+                        'exists:products,id',
                     ],
 
                 ];

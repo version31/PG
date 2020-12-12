@@ -24,6 +24,12 @@ Route::any('callback', 'ShetabController@callback'); #@todo Do test
 Route::middleware('auth:api')->group(function () {
 
     #--------------------------------------------------
+    # new
+    #--------------------------------------------------
+    Route::get('products/{id}/info', 'ProductController@onSaleDetail');
+
+
+    #--------------------------------------------------
     # shopping
     #--------------------------------------------------
     Route::get('shop', 'ShopController@index');

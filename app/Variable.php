@@ -13,6 +13,9 @@ class Variable extends Model
     public $temp = [
         'OnSaleOpenTime'=> '00:00:01', //تاریخ شروع حراجستان
         'OnSaleLimitProduct'=> 100, //تعداد کالاهای حراجستان در هر روز
+        'OnSaleDefaultPrice'=> 100000 , // هزینه درج در حراجستان
+        'OnSaleAudioPrice'=> 0, //هزینه درج در حراجستان در صورت داشتن صدا
+        'OnSaleVideoPrice'=> 0, //هزینه درج در حراجستان در صورت داشتن ویدیو
     ];
 
 

@@ -30,7 +30,6 @@ trait sh4Auth
     public $limitMinute = 5;
 
 
-    public $first_limit_insert_product = 10;
 
 
     public function loginWithPassword(Request $request)
@@ -69,8 +68,11 @@ trait sh4Auth
 
     private function register(RegisterRequest $request)
     {
+
+
         $input['mobile'] = $request->get('mobile');
         $input['password'] = bcrypt($request->get('password'));
+        $input['agent_id'] = $request->get('agent_id');
 
 
         $user = User::where('mobile', $input['mobile'])->first();
@@ -78,8 +80,6 @@ trait sh4Auth
         if ($user) {
             $user->update($input);
         } else {
-            $input['limit_insert_product'] = $this->first_limit_insert_product;
-            $input['shop_expired_at'] = Carbon::now()->addYears(5);
             $user = User::create($input);
 
             $role = Role::where('name', 'user')->first();

@@ -28,6 +28,6 @@ class CreateCategoriableTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoriable');
+        Schema::dropIfExists('categoriables');
     }
 }

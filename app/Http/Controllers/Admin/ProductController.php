@@ -115,8 +115,8 @@ class ProductController extends Controller
         }
 
         if ($request->has('promote_expired_at')) {
-            $shop_expired_at = date('Y-m-d H:i:s', substr($request->input('promote_expired_at'), 0, -3));
-            $product->promote_expired_at = $shop_expired_at;
+            $promote_expired_at = date('Y-m-d H:i:s', substr($request->input('promote_expired_at'), 0, -3));
+            $product->promote_expired_at = $promote_expired_at;
         }
 
 
@@ -265,12 +265,12 @@ class ProductController extends Controller
 
 
         if ($request->has('promote_expired_at')) {
-            $shop_expired_at = date('Y-m-d H:i:s', substr($request->input('promote_expired_at'), 0, -3));
+            $promote_expired_at = date('Y-m-d H:i:s', substr($request->input('promote_expired_at'), 0, -3));
 
             $expired_at = date('Y-m-d H:i:s', substr($request->input('expired_at'), 0, -3));
             $data['expired_at'] = $expired_at;
 
-            $product->promote_expired_at = $shop_expired_at;
+            $product->promote_expired_at = $promote_expired_at;
         }
 
         if ($product->save()) {

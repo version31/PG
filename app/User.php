@@ -177,7 +177,7 @@ class User extends Authenticatable implements Wallet
 
     public function scopeCheckStatusShop($query)
     {
-        return $query->where('shop_expired_at', '>', Carbon::now());
+//        return $query->where('shop_expired_at', '>', Carbon::now());
 
     }
 
@@ -199,7 +199,7 @@ class User extends Authenticatable implements Wallet
 
     public function scopeShopIsActive($query)
     {
-        return $query->where('status', '>', 0)->where('shop_expired_at', '>', Carbon::now());
+//        return $query->where('status', '>', 0)->where('shop_expired_at', '>', Carbon::now());
     }
 
     public function stars()

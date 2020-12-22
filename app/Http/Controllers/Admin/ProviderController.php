@@ -79,10 +79,6 @@ class ProviderController extends Controller
         $data = array_filter($data);
 
 
-        if ($request->has('shop_expired_at')) {
-            $shop_expired_at = date('Y-m-d H:i:s', substr($request->input('shop_expired_at'), 0, -3));
-            $data['shop_expired_at'] = $shop_expired_at;
-        }
 
 
         $data['role_id'] = 2;

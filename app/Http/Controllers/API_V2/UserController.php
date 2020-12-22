@@ -32,17 +32,15 @@ class UserController extends Controller
         $query = User::where('id', Auth::id())->select([
             'id',
             "count_product",
-            "limit_insert_product",
-            "shop_expired_at",
             "created_at",
         ])
             ->with('wallet')
             ->first();
 
 
-//        dd($query);
+        //        dd($query);
 
-//        return $query;
+        //        return $query;
         return new ShowStatusResource($query);
 
     }
@@ -103,7 +101,7 @@ class UserController extends Controller
             $columns['password'] = bcrypt($this->checkPassword($request->get('password')));
 
 
-//        $columns['password'] = bcrypt("password");
+        //        $columns['password'] = bcrypt("password");
 
 
         if ($request->hasFile('avatar'))
@@ -120,6 +118,9 @@ class UserController extends Controller
         $requestLinks = is_string($request->get('links')) ? json_decode($request->get('links'), true) : $request->get('links');
         $requestLinks = is_array($requestLinks) ? $requestLinks : [];
 
+
+
+
         $links = [];
         foreach ($requestLinks as $link)
             $links[] = new Link($link);
@@ -127,17 +128,21 @@ class UserController extends Controller
         User::find($id)->links()->saveMany($links);
 
 
+        $categories = $request->get('categories') ?? [];
+
+        User::find($id)->categories()->sync($categories);
+
+
         $data['user'] = User::select(array_merge(['id', 'avatar'], $fields))->with('links')->where('id', $id)->first();
         return new SuccessResource();
     }
 
 
-    public function updatePresentableFields(PresentableFieldRequest $request )
+    public function updatePresentableFields(PresentableFieldRequest $request)
     {
         $id = Auth::id();
 
         $fields = $request->get('presentable_fields');
-
 
 
         User::where('id', $id)->update(['presentable_fields' => $fields]);
@@ -160,7 +165,7 @@ class UserController extends Controller
 
 
             $validator = Validator::make($password, [
-//                'old' => 'required',
+                //                'old' => 'required',
                 'new' => 'required|string|min:8',
                 'confirmation' => 'required|string|min:8|',
             ]);
@@ -175,10 +180,10 @@ class UserController extends Controller
 
 
             ## remove old password
-//            if (!(Hash::check($password['old'], \Auth::user()->password)))
-//                return Result::setErrors(["پسورد فعلی صحیح نمی باشد"])->get();
-//            if (strcmp($password['old'], $password['new']) == 0)
-//                return Result::setErrors(["لطفا یک پسورد جدید انتخاب کنید، شما نمی توانید پسورد قبلی خود را انتخاب کنید."])->get();
+            //            if (!(Hash::check($password['old'], \Auth::user()->password)))
+            //                return Result::setErrors(["پسورد فعلی صحیح نمی باشد"])->get();
+            //            if (strcmp($password['old'], $password['new']) == 0)
+            //                return Result::setErrors(["لطفا یک پسورد جدید انتخاب کنید، شما نمی توانید پسورد قبلی خود را انتخاب کنید."])->get();
 
             return $password['new'];
         }

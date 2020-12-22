@@ -28,7 +28,6 @@ class ProviderCollection extends V2Resource
             "count_like" => $this->count_like,
             "longitude" => $this->longitude,
             "latitude" => $this->latitude,
-            "shop_expired_at" => $this->shop_expired_at,
             "stars" => $this->stars,
             "verified" => $this->verified,
         ];

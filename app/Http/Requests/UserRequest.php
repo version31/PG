@@ -22,7 +22,7 @@ class UserRequest extends ApiRequest
             ],
             "gender" => [
                 'required',
-                'in:male,female,not-selected',
+                'in:MALE,FEMALE,NOT-SELECTED',
             ],
             "bio" => [
                 'string',
@@ -33,14 +33,14 @@ class UserRequest extends ApiRequest
             "email" => [
                 'required',
                 'email',
-//                'unique:users,'.\Auth::id()
+                //                'unique:users,'.\Auth::id()
                 Rule::unique('users')->ignore(Auth::id())
             ],
             "mobile" => [
                 'required',
-//                'iran_mobile',
-//                'unique:users,'.\Auth::id()
-                 Rule::unique('users')->ignore(Auth::id())
+                //                'iran_mobile',
+                //                'unique:users,'.\Auth::id()
+                Rule::unique('users')->ignore(Auth::id())
             ],
             "phone" => [
                 'iran_phone',
@@ -62,6 +62,16 @@ class UserRequest extends ApiRequest
             'longitude' => [
                 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'
             ]
+            ,
+            'categories' => [
+                'array',
+                'max:3'
+            ],
+            'categories.*' => [
+                'exists:categories,id'
+            ],
+
+
         ];
 
     }

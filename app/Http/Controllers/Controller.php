@@ -150,7 +150,7 @@ class Controller extends BaseController
     public function adaptDate($date)
     {
         if ($date) {
-            return $shop_expired_at = date('Y-m-d H:i:s', substr($date, 0, -3));
+            return  date('Y-m-d H:i:s', substr($date, 0, -3));
         }
     }
 

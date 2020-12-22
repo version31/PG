@@ -32,7 +32,7 @@ class ProductController extends Controller
             ->orderBy('id', 'Desc')
             ->where('status', '>', 0)
             ->whereHas("user", function ($q) {
-                $q->where("status", ">", 0)->where('shop_expired_at', ">", Carbon::now());
+                $q->where("status", ">", 0);
             });
 
 
@@ -118,9 +118,6 @@ class ProductController extends Controller
         if ($validator->fails())
             return Result::setErrors([$validator->errors()])->get();
 
-
-        if (Auth::user()->shop_expired_at < Carbon::now())
-            return Result::setErrors(['shop_expired' => 'فروشگاه شما منقضی شده است. لطفا فروشگاه خود را تمدید نمایید'])->get();
 
         if (Auth::user()->limit_insert_product < 1)
             return Result::setErrors(['limit_insert_product' => 'لطفا بسته ی درج محصول را تمدید نمایید.'])->get();

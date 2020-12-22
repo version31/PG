@@ -68,10 +68,8 @@ class UserController extends Controller
         $request->validate($userFields);
 
         $data = $request->all();
-        if ($request->input('role_id') == 2 && $request->has('star-plan')) {
-            $shop_expired_at = date('Y-m-d H:i:s', substr($request->input('shop_expired_at'), 0, -3));
-            $data['shop_expired_at'] = $shop_expired_at;
-        }
+
+
         $data['password'] = bcrypt($request->input('password'));
         if ($request->hasFile('avatar')) {
             $data['avatar'] = $this->storeMedia($request->file('avatar')[0], 'picture');

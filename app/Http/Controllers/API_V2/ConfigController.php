@@ -16,7 +16,7 @@ class ConfigController extends Controller
         $data['last_version'] = $this->lastVersionAPI;
         $data['minimum_version'] = $this->minimumVersionAPI;
         $data['current_version'] = $this->getCurrentVersion();
-        $data['current_user'] = Auth::user() ? Auth::user()->only(['id', 'name', 'mobile', 'status', 'shop_expired_at', 'limit_insert_product', 'role']) : null;
+        $data['current_user'] = Auth::user() ? Auth::user()->only(['id', 'name', 'mobile', 'status',  'role']) : null;
         $data['ip'] = \Request::ip();
 
         return new BasicResource($data);

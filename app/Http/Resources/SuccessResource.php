@@ -8,12 +8,19 @@ class SuccessResource extends JsonResource
 {
 
     public $message;
+    public $data;
 
-    public function __construct( $message = "عملیات با موفقیت انجام شد")
+    public function __construct($data = [], $message = "عملیات با موفقیت انجام شد")
     {
         $this->message = $message;
+        $this->data = $data;
     }
 
+
+    public function toArray($request)
+    {
+        return $this->data;
+    }
 
 
     public function with($request)

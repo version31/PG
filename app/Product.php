@@ -14,11 +14,10 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $hidden = [
-        'created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'category_id', 'pivot'];
+        'created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'pivot'];
 
 
     protected $fillable = [
-        "category_id",
         "confirmed_at",
         "count_like",
         "count_visit",
@@ -60,10 +59,7 @@ class Product extends Model implements HasMedia
         return $this->morphMany('App\Likeable', 'likeable');
     }
 
-    public function category()
-    {
-        return $this->belongsTo('App\Category')->select('id', 'name');
-    }
+
 
     public function user()
     {
@@ -137,7 +133,7 @@ class Product extends Model implements HasMedia
     }
 
 
-    public function scopeCountActive($builder, $categoryId = null)
+    public function scopeCountActive($builder)
     {
 
         $products = $builder->where('status', '>', 0)
@@ -145,9 +141,7 @@ class Product extends Model implements HasMedia
                 $query->where('shop_expired_at', '>', Carbon::now());
             });
 
-        if ($categoryId) {
-            $products = $products->where('category_id', $categoryId);
-        }
+
 
 
         return $products->count();

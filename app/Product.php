@@ -16,7 +16,6 @@ class Product extends Model implements HasMedia
     protected $hidden = [
         'created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'pivot'];
 
-
     protected $fillable = [
         "confirmed_at",
         "count_like",
@@ -35,6 +34,7 @@ class Product extends Model implements HasMedia
         'shipping',
     ];
 
+
     protected $appends = ['bookmarked', 'liked', 'thumbnail', 'is_yours', 'description_html'];
 
 
@@ -49,10 +49,12 @@ class Product extends Model implements HasMedia
         return $this->morphMany('App\Addable', 'addable');
     }
 
+
     public function bookmarkables()
     {
         return $this->morphMany('App\Bookmarkable', 'bookmarkable');
     }
+
 
     public function likeables()
     {
@@ -60,13 +62,10 @@ class Product extends Model implements HasMedia
     }
 
 
-
     public function user()
     {
         return $this->belongsTo('App\User')->select('id', 'first_name', 'last_name', 'avatar', 'mobile', 'website', 'phone', 'role_id', 'status', 'shop_name');
     }
-
-
 
 
     public function getThumbnailAttribute()
@@ -106,10 +105,6 @@ class Product extends Model implements HasMedia
     }
 
 
-    /**
-     * @return bool
-     * Mr Farbod asked me to place edit icon
-     */
     public function getISYoursAttribute()
     {
         if (Auth::user())
@@ -126,6 +121,7 @@ class Product extends Model implements HasMedia
     {
         return strip_tags($value);
     }
+
 
     public function getDescriptionHtmlAttribute($value)
     {
@@ -153,6 +149,13 @@ class Product extends Model implements HasMedia
     {
         return $this->morphToMany(Category::class, 'categoriable');
     }
+
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
 
 
 }

@@ -48,8 +48,8 @@ class UserController extends Controller
 
     public function currentUser()
     {
-        $query = User::where('id', Auth::id())->with(['city', 'role', 'favoritePosts', 'favoriteProducts', 'links', 'products' => function ($query) {
-            $query->orderBy('id', 'Desc')->with('addables');
+        $query = User::where('id', Auth::id())->with(['city', 'categories', 'roles', 'favoritePosts', 'favoriteProducts', 'links', 'products' => function ($query) {
+            $query->orderBy('id', 'Desc');
         }])
             ->first();
 

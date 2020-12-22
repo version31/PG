@@ -157,5 +157,10 @@ class Product extends Model implements HasMedia
     }
 
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
 
 }

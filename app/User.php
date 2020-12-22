@@ -77,7 +77,7 @@ class User extends Authenticatable implements Wallet
 
     public function favoriteProducts()
     {
-        return $this->morphedByMany('App\Product', 'bookmarkable')->select('id', 'title', 'media_path', 'count_like', 'type', 'products.user_id')->with(['addables', 'user']);
+        return $this->morphedByMany('App\Product', 'bookmarkable')->select('id', 'title', 'media_path', 'count_like', 'products.user_id')->with(['addables', 'user']);
     }
 
 

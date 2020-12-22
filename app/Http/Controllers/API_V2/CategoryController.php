@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BasicResource;
 use App\Product;
 use App\Sh4\sh4Action;
+use App\User;
 use Illuminate\Http\Request;
 use Lcobucci\JWT\Claim\Basic;
 
@@ -19,10 +20,17 @@ class CategoryController extends Controller
 
     public function index()
     {
+        $categories = Category::orderBy('order', 'Desc')->limit(1)->get();
 
-        $query = Category::orderBy('order', 'Desc')->get();
+        #@todo کاربران باید بر اساس بیشترین محصولات فروشگاه اینجا نمایش داده شوند
+        $topUsersByMostProducts = User::limit(1)->get();
 
-        return new BasicResource($query);
+        $data = [
+            'categories' => $categories,
+            'default_users' => $topUsersByMostProducts,
+        ];
+
+        return new BasicResource($data);
 
     }
 
@@ -34,29 +42,18 @@ class CategoryController extends Controller
         $p['offset'] = ($p['page'] - 1) * $p['per'];
 
         $query = Category::where('id', $id)
-            ->with(['products' => function ($query) use ($p , $request) {
-
-                $query = $query->whereHas('user', function ($query) {
-                    $query->shopIsActive();
-                });
-
-                $query = $query->with('user')
-                    ->orderBy('promote_expired_at', 'Desc')
-                    ->orderBy('id', 'Desc')
-                    ->where('status', '>', 0);
-
+            ->with(['users' => function ($query) use ($p , $request) {
                 if ($p['q'])
                     $query = $query->where('title', 'like', '%' . $request->get('q') . '%');
 
                 if ($p['per'] && $p['per'])
-                    $query = $query->with('user')->offset($p['offset'])
+                    $query = $query->offset($p['offset'])
                         ->limit($p['per'])
                         ->get();
                 return $query;
             }])
             ->first();
 
-        $query['count_product'] = Product::countActive($id);
 
 
         return new BasicResource($query);

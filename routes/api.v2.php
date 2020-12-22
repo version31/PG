@@ -129,7 +129,9 @@ Route::middleware('auth:api')->group(function () {
     # Posts
     #--------------------------------------------------
     Route::get('posts', 'PostController@index');
+    Route::post('posts', 'PostController@store');
     Route::get('posts/{id}', 'PostController@show');
+    Route::put('posts/{id}', 'PostController@update');
     Route::put('posts/action', 'PostController@act');
 
 

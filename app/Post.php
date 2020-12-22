@@ -11,6 +11,10 @@ class Post extends Model
 {
     protected $hidden = ['pivot'];
 
+    protected $fillable = [
+        'title','body','study_time','media_path','user_id'
+    ];
+
     protected $appends = ['bookmarked', 'liked' ,  'thumbnail' , 'body_html'];
 
     public function user()

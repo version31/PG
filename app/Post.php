@@ -72,5 +72,11 @@ class Post extends Model
         return $value;
     }
 
+
+    public function categories()
+    {
+        return $this->morphToMany(Category::class, 'categoriable');
+    }
+
 }
 

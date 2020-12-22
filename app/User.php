@@ -225,6 +225,10 @@ class User extends Authenticatable implements Wallet
     }
 
 
+    public function categories()
+    {
+        return $this->morphToMany(Category::class, 'categoriable');
+    }
 
 
 

@@ -145,11 +145,6 @@ class Product extends Model implements HasMedia
     }
 
 
-    public function categories()
-    {
-        return $this->morphToMany(Category::class, 'categoriable');
-    }
-
 
     public function tags()
     {

@@ -12,9 +12,9 @@ class Category extends Model
     protected $appends = [ 'liked'];
 
 
-    public function products()
+    public function users()
     {
-        return $this->morphedByMany(Product::class, 'categoriable');
+        return $this->morphedByMany(User::class, 'categoriable');
     }
 
 

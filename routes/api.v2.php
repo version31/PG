@@ -30,6 +30,13 @@ Route::middleware('auth:api')->group(function () {
 
 
     #--------------------------------------------------
+    # banners
+    #--------------------------------------------------
+    Route::get('banners/plans', 'BannerController@plans');
+    Route::post('banners/requests', 'BannerController@store');
+
+
+    #--------------------------------------------------
     # sms_requests
     #--------------------------------------------------
     Route::post('sms-requests', 'SmsRequestController@store');

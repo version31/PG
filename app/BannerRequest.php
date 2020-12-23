@@ -13,6 +13,7 @@ class BannerRequest extends Model
         'day',
         'published_at',
         'approved_at',
+        'total_price',
     ];
 
 

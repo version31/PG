@@ -30,37 +30,35 @@ trait sh4Auth
     public $limitMinute = 5;
 
 
-
-
     public function loginWithPassword(Request $request)
     {
         if (!Auth::attempt(['mobile' => request('mobile'), 'password' => request('password')]))
-            return new ErrorResource(['unauthorised' => ["اطلاعات وارد شده صحیح نمی باشد"]] , 401);
+            return new ErrorResource(['unauthorised' => ["اطلاعات وارد شده صحیح نمی باشد"]], 401);
 
         $user = Auth::user();
-        return $this->setResultAfterLogin($user );
+        return $this->setResultAfterLogin($user);
 
 
-//
-//        $credentials = request(['mobile', 'password']);
-//
-//        if (!Auth::attempt($credentials))
-//            return response()->json([
-//                'message' => 'Unauthorized'
-//            ], 401);
-//        $user = $request->user();
-//        $tokenResult = $user->createToken('Personal Access Token');
-//        $token = $tokenResult->token;
-//        if ($request->remember_me)
-//            $token->expires_at = Carbon::now()->addWeeks(1);
-//        $token->save();
-//        return response()->json([
-//            'access_token' => $tokenResult->accessToken,
-//            'token_type' => 'Bearer',
-//            'expires_at' => Carbon::parse(
-//                $tokenResult->token->expires_at
-//            )->toDateTimeString()
-//        ]);
+        //
+        //        $credentials = request(['mobile', 'password']);
+        //
+        //        if (!Auth::attempt($credentials))
+        //            return response()->json([
+        //                'message' => 'Unauthorized'
+        //            ], 401);
+        //        $user = $request->user();
+        //        $tokenResult = $user->createToken('Personal Access Token');
+        //        $token = $tokenResult->token;
+        //        if ($request->remember_me)
+        //            $token->expires_at = Carbon::now()->addWeeks(1);
+        //        $token->save();
+        //        return response()->json([
+        //            'access_token' => $tokenResult->accessToken,
+        //            'token_type' => 'Bearer',
+        //            'expires_at' => Carbon::parse(
+        //                $tokenResult->token->expires_at
+        //            )->toDateTimeString()
+        //        ]);
 
 
     }
@@ -71,8 +69,18 @@ trait sh4Auth
 
 
         $input['mobile'] = $request->get('mobile');
+        $input['code'] = $request->get('code');
         $input['password'] = bcrypt($request->get('password'));
         $input['agent_id'] = $request->get('agent_id');
+
+
+        $log = SMSLog::validFromLog($input['code'], $input['mobile']);
+
+        if (!$log) {
+            $result = Result::setErrors(['wrong_code' => ['wrong code']]);
+            return $result->get();
+        }
+
 
 
         $user = User::where('mobile', $input['mobile'])->first();
@@ -87,12 +95,16 @@ trait sh4Auth
         }
 
 
+
+
+
         return $this->setResultAfterLogin($user);
 
     }
 
 
-    public function details()
+    public
+    function details()
     {
         $user = Auth::user();
         $result = $this->setResultAfterLogin($user);
@@ -100,7 +112,8 @@ trait sh4Auth
     }
 
     #STEP01
-    public function getMobile(Request $request)
+    public
+    function getMobile(Request $request)
     {
 
         $mobile = $request->input('mobile');
@@ -153,7 +166,8 @@ trait sh4Auth
 
 
     #STEP02
-    public function getCode(Request $request)
+    public
+    function getCode(Request $request)
     {
 
         $result = null;
@@ -194,17 +208,18 @@ trait sh4Auth
 
 
     #STEP03
-    protected function registerWithCode(RegisterRequest $request)
+    protected
+    function registerWithCode(RegisterRequest $request)
     {
 
         $code = $request->only('code');
         $mobile = $request->only('mobile');
         $log = SMSLog::validFromLog($code, $mobile);
         if ($log) {
-//            $incomplete_user = User::where('mobile', $mobile)->first();
-//
-//            if ($incomplete_user)
-//                User::find($incomplete_user->id)->delete();
+            //            $incomplete_user = User::where('mobile', $mobile)->first();
+            //
+            //            if ($incomplete_user)
+            //                User::find($incomplete_user->id)->delete();
 
             return $this->register($request);
         } else {
@@ -216,7 +231,8 @@ trait sh4Auth
     }
 
 
-    private function setErrorInResultIfLimitSms($mobile, $device_id)
+    private
+    function setErrorInResultIfLimitSms($mobile, $device_id)
     {
         $error = null;
         $countMobile = SMSLog::where('mobile', $mobile)->count();
@@ -237,7 +253,8 @@ trait sh4Auth
     }
 
 
-    public function setResultAfterLogin($user)
+    public
+    function setResultAfterLogin($user)
     {
 
         $user = User::where('id', $user->id)->first();
@@ -255,30 +272,31 @@ trait sh4Auth
 
 
         return new AfterLoginResource($data);
-//        return Result::setData($data);
+        //        return Result::setData($data);
     }
 
 
-    public function sendSMSCode($code, $mobile)
+    public
+    function sendSMSCode($code, $mobile)
     {
-//        $username = "beigi";
-//        $password = '09369659219';
-//        $from = "+9850002620000606";
-//        $pattern_code = "120";
-//        $to = [$mobile];
-//        $input_data = array("confirmation-code" => $code);
-//        $url = "http://37.130.202.188/patterns/pattern?username=" . $username . "&password=" . urlencode($password) . "&from=$from&to=" . json_encode($to) . "&input_data=" . urlencode(json_encode($input_data)) . "&pattern_code=$pattern_code";
-//        $handler = curl_init($url);
-//        curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "POST");
-//        curl_setopt($handler, CURLOPT_POSTFIELDS, $input_data);
-//        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
-//        $response = curl_exec($handler);
-//        return $response;
+        //        $username = "beigi";
+        //        $password = '09369659219';
+        //        $from = "+9850002620000606";
+        //        $pattern_code = "120";
+        //        $to = [$mobile];
+        //        $input_data = array("confirmation-code" => $code);
+        //        $url = "http://37.130.202.188/patterns/pattern?username=" . $username . "&password=" . urlencode($password) . "&from=$from&to=" . json_encode($to) . "&input_data=" . urlencode(json_encode($input_data)) . "&pattern_code=$pattern_code";
+        //        $handler = curl_init($url);
+        //        curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "POST");
+        //        curl_setopt($handler, CURLOPT_POSTFIELDS, $input_data);
+        //        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
+        //        $response = curl_exec($handler);
+        //        return $response;
 
 
         $message = 'کد فعال سازی شما: ' . $code . '  پارسیانگرام  ';
-//
-//        Smsirlaravel::send($message, $mobile);
+        //
+        //        Smsirlaravel::send($message, $mobile);
 
         Smsirlaravel::ultraFastSend(['VerificationCode' => $code], 9606, $mobile);
 
@@ -286,74 +304,74 @@ trait sh4Auth
     }
 
 
-    public function deleteLog()
+    public
+    function deleteLog()
     {
         \DB::table('sms_logs')->delete();
         return "logs dropped successfully!";
     }
 
 
+    //    public function v1_setResultAfterLogin($user)
+    //    {
+    //        $user = User::where('id', $user->id)->first();
+    //
+    //        $data['token'] = $user->createToken('MP')->accessToken;
+    //        $data['user_registered'] = true;
+    //        $data['status'] = $user->status;
+    //        $data['mobile'] = $user->mobile;
+    //        $data['role'] = $user->role;
+    //        $data['name'] = $user->name;
+    //        $data['id'] = $user->id;
+    //        return Result::setData($data);
+    //    }
 
-//    public function v1_setResultAfterLogin($user)
-//    {
-//        $user = User::where('id', $user->id)->first();
-//
-//        $data['token'] = $user->createToken('MP')->accessToken;
-//        $data['user_registered'] = true;
-//        $data['status'] = $user->status;
-//        $data['mobile'] = $user->mobile;
-//        $data['role'] = $user->role;
-//        $data['name'] = $user->name;
-//        $data['id'] = $user->id;
-//        return Result::setData($data);
-//    }
-
-//    private function v1_register(Request $request)
-//    {
-//
-//
-//        Log::emergency($request->all()); #todo test
-//
-//        $validator = Validator::make($request->all(), [
-//            'mobile' => 'required',
-//            'password' => 'required'
-//        ]);
-//
-//        $role = $request->get('role');
-//
-//
-//        switch ($role) {
-//            case "user":
-//                $input['role_id'] = 3;
-//                break;
-//            case "provider":
-//                $input['role_id'] = 2;
-//                $input['status'] = 0;
-//                break;
-//
-//            default:
-//                return Result::setErrors(['wrong-role'])->get();
-//        }
-//
-//        if ($validator->fails()) {
-//            $result = Result::setErrors([$validator->errors()]);
-//        } else {
-//            $input['mobile'] = $request->get('mobile');
-//            $input['password'] = bcrypt($request->get('password'));
-//
-//
-//            $user = User::where('mobile', $input['mobile'])->first();
-//
-//            if ($user)
-//                $user->update($input);
-//            else
-//                $user = User::create($input);
-//
-//
-//            $result = $this->setResultAfterLogin($user);
-//        }
-//
-//        return $result->get();
-//    }
+    //    private function v1_register(Request $request)
+    //    {
+    //
+    //
+    //        Log::emergency($request->all()); #todo test
+    //
+    //        $validator = Validator::make($request->all(), [
+    //            'mobile' => 'required',
+    //            'password' => 'required'
+    //        ]);
+    //
+    //        $role = $request->get('role');
+    //
+    //
+    //        switch ($role) {
+    //            case "user":
+    //                $input['role_id'] = 3;
+    //                break;
+    //            case "provider":
+    //                $input['role_id'] = 2;
+    //                $input['status'] = 0;
+    //                break;
+    //
+    //            default:
+    //                return Result::setErrors(['wrong-role'])->get();
+    //        }
+    //
+    //        if ($validator->fails()) {
+    //            $result = Result::setErrors([$validator->errors()]);
+    //        } else {
+    //            $input['mobile'] = $request->get('mobile');
+    //            $input['password'] = bcrypt($request->get('password'));
+    //
+    //
+    //            $user = User::where('mobile', $input['mobile'])->first();
+    //
+    //            if ($user)
+    //                $user->update($input);
+    //            else
+    //                $user = User::create($input);
+    //
+    //
+    //            $result = $this->setResultAfterLogin($user);
+    //        }
+    //
+    //        return $result->get();
+    //    }
 
 }

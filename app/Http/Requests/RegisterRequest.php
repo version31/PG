@@ -19,6 +19,11 @@ class RegisterRequest extends ApiRequest
                 'string',
             ],
 
+            "code" => [
+                'required',
+                'string',
+            ],
+
             "agent_id" => [
                 'nullable',
                 'exists:users,id',

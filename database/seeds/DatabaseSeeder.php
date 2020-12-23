@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
 //         $this->call(VariableSeed::class);
 //         $this->call(PermissionSeed::class);
 //         $this->call(MenuSeeder::class);
+         $this->call(BannerPlanSeed::class);
     }
 }

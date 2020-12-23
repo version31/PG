@@ -85,13 +85,25 @@ trait sh4Auth
 
         $user = User::where('mobile', $input['mobile'])->first();
 
+
+
+
         if ($user) {
             $user->update($input);
         } else {
             $user = User::create($input);
 
+            //Assign role
             $role = Role::where('name', 'user')->first();
             $user->assignRole($role);
+
+            //Assign wallet
+            if (!$user->hasWallet('coin'))
+                $user->createWallet([
+                    'name' => 'سکه',
+                    'slug' => 'coin',
+                ]);
+
         }
 
 

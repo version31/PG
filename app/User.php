@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Bavix\Wallet\Traits\HasWallets;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,7 @@ use Bavix\Wallet\Interfaces\Wallet;
 
 class User extends Authenticatable implements Wallet
 {
-    use HasApiTokens, Notifiable, HasRoles, HasWallet;
+    use HasApiTokens, Notifiable, HasRoles, HasWallet ,  HasWallets;
 
 
     protected $guard_name = 'web';

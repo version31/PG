@@ -73,7 +73,7 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     Route::get('categories', 'CategoryController@index');
     Route::get('categories/{id}', 'CategoryController@show');
-    Route::put('categories/action', 'CategoryController@act');
+    Route::put('categories/{id}/action', 'CategoryController@act');
 
 
     #--------------------------------------------------
@@ -88,7 +88,7 @@ Route::middleware('auth:api')->group(function () {
     # Users
     #--------------------------------------------------
     Route::get('users/{id}/catalogs', 'UserController@catalogs');
-    Route::put('users/action', 'UserController@act');
+    Route::put('users/{id}/action', 'UserController@act');
 
 
     Route::get('/users/current', 'UserController@currentUser');
@@ -109,7 +109,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('explorer', 'ProductController@explorer');
     Route::get('products/{id}', 'ProductController@show');
     Route::post('products', 'ProductController@store');
-    Route::put('products/action', 'ProductController@act');
+    Route::put('products/{id}/action', 'ProductController@act');
     Route::put('products/{id}', 'ProductController@update'); #todo ???
     Route::delete('products/{id}', 'ProductController@destroy');
     Route::post('products/report', 'ProductController@report');
@@ -157,7 +157,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('posts', 'PostController@store');
     Route::get('posts/{id}', 'PostController@show');
     Route::put('posts/{id}', 'PostController@update');
-    Route::put('posts/action', 'PostController@act');
+    Route::put('posts/{id}/action', 'PostController@act');
 
 
     #--------------------------------------------------

@@ -22,13 +22,11 @@ trait sh4Action
     public $errors = [];
 
 
-    public function act(ActionRequest $request)
+    public function act(ActionRequest $request , $id)
     {
 
 
         $detail = null;
-
-        $id = $request->get('id');
 
 
         $models = [

@@ -19,7 +19,15 @@ class SuccessResource extends JsonResource
 
     public function toArray($request)
     {
-        return $this->data;
+        $result = [];
+
+        if (isset($this->data->id))
+            $result['id'] = $this->data->id;
+
+        if (isset($this->data->created_at))
+            $result['created_at'] = $this->data->created_at;
+
+        return $result;
     }
 
 

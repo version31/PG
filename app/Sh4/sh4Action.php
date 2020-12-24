@@ -31,7 +31,6 @@ trait sh4Action
         $id = $request->get('id');
 
 
-
         $models = [
             'App\Http\Controllers\API_V2\PostController' => 'App\Post',
             'App\Http\Controllers\API_V2\CategoryController' => 'App\Category',
@@ -138,11 +137,9 @@ trait sh4Action
                 return new ErrorResource(['wrong act' => 'wrong act']);
         }
 
-        return new SuccessResource($message);
+        return new SuccessResource(null, $message);
 
     }
-
-
 
 
 }

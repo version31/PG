@@ -24,7 +24,20 @@ class ProductRequest extends ApiRequest
                         'integer',
                     ],
 
-                    'shipping' => [
+                    'shipping_others_day' => [
+                        'required',
+                        'integer',
+                    ],
+                    'shipping_others_price' => [
+                        'required',
+                        'integer',
+                    ],
+                    'shipping_tehran_day' => [
+                        'required',
+                        'integer',
+                    ],
+                    'shipping_tehran_price' => [
+                        'required',
                         'integer',
                     ],
 
@@ -34,10 +47,6 @@ class ProductRequest extends ApiRequest
                         'min:6',
                         'max:1000',
                     ],
-                    'category_id' => [
-                        'required',
-                        'exists:categories,id'
-                    ],
                     'media_path' => [
                         'required',
                         'max:8000000',
@@ -45,7 +54,7 @@ class ProductRequest extends ApiRequest
                     ],
 
                     'audio' => [
-//                        'mimes:mp4,ogg,qt,wav,mp3',
+                        //                        'mimes:mp4,ogg,qt,wav,mp3',
                     ],
                     'media.*' => [
                         'max:8000000',

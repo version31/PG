@@ -40,7 +40,6 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        return User::find(976)->balance;
 
         $query = Product::where('id', $id)->with(['user' => function ($q) {
             return $q->with('links');
@@ -109,7 +108,10 @@ class ProductController extends Controller
             "description",
             "category_id",
             "price",
-            "shipping",
+            'shipping_tehran_price',
+            'shipping_others_price',
+            'shipping_tehran_day',
+            'shipping_others_day',
         ];
 
         $columns = $request->only($fields);
@@ -120,7 +122,6 @@ class ProductController extends Controller
 
 
         $columns['user_id'] = Auth::id();
-        $productId = Product::insertGetId($columns);
         $newRow = Product::create($columns);
 
 
@@ -138,14 +139,14 @@ class ProductController extends Controller
                 ->toMediaCollection();
 
 
-        if ($productId) {
+        if ($newRow) {
             //            Auth::user()->decrement('limit_insert_product');
             User::find(1)->increment('count_product');
-            Category::find($catId)->increment('count_product');
+//            Category::find($catId)->increment('count_product');
             Auth::user()->increment('count_product');
         }
 
-        return new SuccessResource();
+        return new SuccessResource($newRow);
     }
 
     public function update(ProductRequest $request, $id)

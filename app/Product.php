@@ -31,7 +31,10 @@ class Product extends Model implements HasMedia
         "updated_at",
         "user_id",
         'price',
-        'shipping',
+        'shipping_tehran_price',
+        'shipping_others_price',
+        'shipping_tehran_day',
+        'shipping_others_day',
     ];
 
 
@@ -138,12 +141,9 @@ class Product extends Model implements HasMedia
             });
 
 
-
-
         return $products->count();
 
     }
-
 
 
     public function tags()

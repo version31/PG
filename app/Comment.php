@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Sh4\Sh4HasPagination;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    use Sh4HasPagination;
     //
 
     protected $fillable = [
@@ -18,6 +20,11 @@ class Comment extends Model
         'parent_id',
     ];
 
+    protected $casts = [
+        'positive_items' => 'json',
+        'negative_items' => 'json',
+    ];
+
     public function commentable()
     {
         return $this->morphTo();
@@ -25,11 +32,11 @@ class Comment extends Model
 
     public function children()
     {
-        return $this->hasMany(Comment::class,'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Comment::class,'parent_id');
+        return $this->belongsTo(Comment::class, 'parent_id');
     }
 }

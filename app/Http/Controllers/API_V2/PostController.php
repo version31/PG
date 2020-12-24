@@ -8,13 +8,14 @@ use App\Http\Resources\BasicResource;
 use App\Http\Resources\SuccessResource;
 use App\Post;
 use App\Sh4\sh4Action;
+use App\Sh4\Sh4HasComment;
 use App\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     //
-    use sh4Action;
+    use sh4Action , Sh4HasComment;
 
     public function index(Request $request)
     {

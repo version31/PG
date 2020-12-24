@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API_V2;
 
 use App\Addable;
 use App\Category;
+use App\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentRequest;
 use App\Http\Requests\Product2Request;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\BasicResource;
@@ -12,6 +14,7 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SuccessResource;
 use App\Product;
+use App\Sh4\Sh4HasComment;
 use App\Sh4\sh4Action;
 use App\Sh4\sh4Report;
 use App\User;
@@ -25,7 +28,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class ProductController extends Controller
 {
     //
-    use sh4Action, sh4Report;
+    use sh4Action, sh4Report , Sh4HasComment;
 
 
     private $mediaTypes;
@@ -35,7 +38,6 @@ class ProductController extends Controller
 
         $this->middleware('canProviderSendProduct', ['only' => ['store']]);
     }
-
 
 
     public function show($id)
@@ -142,7 +144,7 @@ class ProductController extends Controller
         if ($newRow) {
             //            Auth::user()->decrement('limit_insert_product');
             User::find(1)->increment('count_product');
-//            Category::find($catId)->increment('count_product');
+            //            Category::find($catId)->increment('count_product');
             Auth::user()->increment('count_product');
         }
 
@@ -172,12 +174,10 @@ class ProductController extends Controller
         }
     }
 
-    public function onSaleDetail ($id)
+    public function onSaleDetail($id)
     {
         return new BasicResource($this->calculateOnSalePrice($id));
     }
-
-
 
 
     public function calculateOnSalePrice($id)
@@ -193,16 +193,16 @@ class ProductController extends Controller
         if (in_array('audio', $this->mediaTypes))
             $totalPrice += Variable::val('OnSaleAudioPrice');
 
-            $types = [
-                'hasVideo' => in_array('video', $this->mediaTypes),
-                'hasAudio' => in_array('audio', $this->mediaTypes),
-                'onSale_default_price' => Variable::val('OnSaleDefaultPrice'),
-                'onSale_audio_price' => Variable::val('OnSaleAudioPrice'),
-                'onSale_video_price' => Variable::val('OnSaleVideoPrice'),
-                'onSale_price_for_this_product' => $totalPrice,
-                'owner_balance' => (int) User::find(Product::find($id)->user_id)->balance,
-                'owner_id' =>  Product::find($id)->user_id,
-            ];
+        $types = [
+            'hasVideo' => in_array('video', $this->mediaTypes),
+            'hasAudio' => in_array('audio', $this->mediaTypes),
+            'onSale_default_price' => Variable::val('OnSaleDefaultPrice'),
+            'onSale_audio_price' => Variable::val('OnSaleAudioPrice'),
+            'onSale_video_price' => Variable::val('OnSaleVideoPrice'),
+            'onSale_price_for_this_product' => $totalPrice,
+            'owner_balance' => (int)User::find(Product::find($id)->user_id)->balance,
+            'owner_id' => Product::find($id)->user_id,
+        ];
 
 
         return $types;
@@ -224,5 +224,8 @@ class ProductController extends Controller
 
         $this->mediaTypes = $types;
     }
+
+
+
 
 }

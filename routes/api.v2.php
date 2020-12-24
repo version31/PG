@@ -32,6 +32,16 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # banners
     #--------------------------------------------------
+    Route::post('products/{id}/comments', 'ProductController@commentStore');
+    Route::post('posts/{id}/comments', 'PostController@commentStore');
+
+    Route::get('products/{id}/comments', 'ProductController@commentIndex');
+    Route::get('posts/{id}/comments', 'PostController@commentIndex');
+
+
+    #--------------------------------------------------
+    # banners
+    #--------------------------------------------------
     Route::get('banners/plans', 'BannerController@plans');
     Route::post('banners/requests', 'BannerController@store');
 

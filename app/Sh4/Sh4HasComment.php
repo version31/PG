@@ -33,7 +33,7 @@ trait Sh4HasComment
             ->where('commentable_type', $this->commentModels[get_class($this)])
             ;
 
-        $query->hasPagination($request , 3);
+        $query->hasPagination($request );
 
 
         return new BasicResource($query->get());

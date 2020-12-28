@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Sh4\Sh4HasPagination;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Spatie\MediaLibrary\HasMedia;
 class Product extends Model implements HasMedia
 {
 
-    use InteractsWithMedia;
+    use InteractsWithMedia , Sh4HasPagination;
 
     protected $hidden = [
         'created_at', 'updated_at', 'confirmed_at', 'priority_expired_at', 'user_id', 'pivot'];
@@ -39,6 +40,24 @@ class Product extends Model implements HasMedia
 
 
     protected $appends = ['bookmarked', 'liked', 'thumbnail', 'is_yours', 'description_html'];
+
+
+    public function scopeSelected($query)
+    {
+
+        $p['page'] = $request->get('page') ?? 1;
+        $p['per'] = $request->get('per') ?? $perDefault ;
+        $p['offset'] = ($p['page'] - 1) * $p['per'];
+
+
+        if ($p['per'] && $p['page'])
+            $query = $query->offset($p['offset'])
+                ->limit($p['per']);
+
+
+
+        return $query;
+    }
 
 
     public function addHidden($attributes = null)

@@ -8,6 +8,7 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use App\Plan;
 use App\Product;
+use App\Sh4\Sh4Withdraw;
 use App\ShopPlan;
 use App\Star;
 use App\Storyable;
@@ -22,6 +23,7 @@ use Symfony\Component\Console\Input\Input;
 class PaymentPlanController extends Controller
 {
 
+    use Sh4Withdraw;
 
 
 
@@ -50,17 +52,5 @@ class PaymentPlanController extends Controller
     }
 
 
-    private function withDraw($price, $errors = [])
-    {
 
-        if ($price > Auth::user()->balance)
-            $errors[] = ['increase_balance' => 'موجودی شما کافی نیست. لطفا موجودی خود را افزایش دهید'];
-
-
-        if (count($errors) > 0)
-            throw new CustomException($errors);
-
-
-        Auth::user()->withdraw($price, ["خرید یا تمدید پلن فروشگاهی"]);
-    }
 }

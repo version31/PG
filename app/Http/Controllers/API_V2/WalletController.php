@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API_V2;
 
+use App\CustomTransaction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MoneyRequest;
 use App\Http\Requests\TransferRequest;
@@ -24,7 +25,7 @@ class WalletController extends Controller
 
         $user = User::where('mobile', $request->get('mobile'))->first();
 
-        $current->transfer($user, $request->get('price') , ["انتقال"]);
+        $current->transfer($user, $request->get('price'), ["انتقال"]);
 
         return new SuccessResource("انتقال با موفقیت انجام گرفت");
     }
@@ -41,23 +42,17 @@ class WalletController extends Controller
             return new SuccessResource();
     }
 
-    public function transactions()
+    public function transactions(Request $request)
     {
-//        return Auth::id();
-        $query = Transaction::select([
-            'transactions.created_at','transactions.id','transactions.type','transactions.amount','transactions.meta',
-//            'users.mobile','users.first_name','users.last_name',
-            'users.id as user__id',
-            'transfers.to_id','transfers.from_id','payable_id'
-        ])
-            ->leftJoin('users','transactions.payable_id','=','users.id')
-            ->leftJoin('transfers','transactions.payable_id','=','users.id')
-            ->where('payable_id',Auth::id())
+        $query = CustomTransaction::query()
+            ->selected()
+            ->leftJoin('users', 'transactions.payable_id', '=', 'users.id')
+            ->leftJoin('transfers', 'transactions.payable_id', '=', 'users.id')
+            ->where('payable_id', Auth::id())
             ->groupBy('transactions.id')
-            ->orderBy('transactions.id','Desc')
-
-            ->get()
-        ;
+            ->orderBy('transactions.id', 'Desc')
+            ->hasPagination($request)
+            ->get();
 
         return WalletTransactionsCollection::collection($query);
     }

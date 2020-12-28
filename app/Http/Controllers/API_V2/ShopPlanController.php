@@ -11,7 +11,10 @@ class ShopPlanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ShopPlan::all();
+        $query = ShopPlan::query()
+            ->selected()
+            ->hasPagination($request)
+            ->get();
 
         return new BasicResource($query);
     }

@@ -14,8 +14,7 @@ class AddShopExpiredAtToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dateTime('shop_expired_at')->nullable();
+            $table->date('shop_expired_at')->nullable();
             $table->dropColumn('shop_days');
         });
     }

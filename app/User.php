@@ -28,7 +28,7 @@ class User extends Authenticatable implements Wallet
     protected $fillable = [
         'shop_name', 'email', 'password', 'mobile', 'avatar',
         'role_id', 'status', 'first_name', 'last_name',
-        "fax", 'presentable_fields','agent_id'
+        "fax", 'presentable_fields','agent_id','shop_expired_at','maximum_product_on_shop'
     ];
 
 

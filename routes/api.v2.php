@@ -27,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
     # new
     #--------------------------------------------------
     Route::get('products/{id}/info', 'ProductController@onSaleDetail');
+    Route::get('shop-plans', 'ShopPlanController@index');
 
 
     #--------------------------------------------------
@@ -57,7 +58,7 @@ Route::middleware('auth:api')->group(function () {
     #--------------------------------------------------
     # shopping
     #--------------------------------------------------
-    Route::get('shop', 'ShopController@index');
+    Route::get('shops', 'ShopController@index');
     Route::get('on-sales', 'OnSaleController@index');
     Route::post('on-sales', 'OnSaleController@store');
 

@@ -32,7 +32,7 @@ class User extends Authenticatable implements Wallet
     ];
 
 
-    protected $appends = ['name', 'role', 'bio_html'];
+    protected $appends = ['name', 'role', 'bio_html','created_day','shop_expired_day'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -82,17 +82,20 @@ class User extends Authenticatable implements Wallet
     }
 
 
+
+
+
     public function following()
     {
         return $this->belongsToMany('App\User', 'bookmarkables', 'user_id', 'bookmarkable_id')
-            ->select('id', 'first_name', 'last_name');
+            ->select('id', 'first_name', 'last_name','avatar');
     }
 
 
     public function followers()
     {
         return $this->belongsToMany('App\User', 'bookmarkables', 'bookmarkable_id', 'user_id')
-            ->select('id', 'first_name', 'last_name');
+            ->select('id', 'first_name', 'last_name','avatar');
     }
 
     public function requests()
@@ -141,6 +144,22 @@ class User extends Authenticatable implements Wallet
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+
+    public function getCreatedDayAttribute()
+    {
+        $created = new Carbon($this->created_at);
+
+        return $created->diffInDays(Carbon::now());
+    }
+
+
+    public function getShopExpiredDayAttribute()
+    {
+        $created = new Carbon($this->shop_expired_at);
+
+        return $created->diffInDays(Carbon::now());
     }
 
 
@@ -240,6 +259,17 @@ class User extends Authenticatable implements Wallet
     public function onSales()
     {
         return $this->hasManyThrough(OnSale::class, Product::class);
+    }
+
+
+    public function scopeSelected($query)
+    {
+        return $query->select([
+            'id',
+            'shop_name',
+            'first_name',
+            'last_name'
+        ]);
     }
 
 }

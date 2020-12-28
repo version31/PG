@@ -94,11 +94,16 @@ Route::middleware('auth:api')->group(function () {
 
 
     Route::get('/users/current', 'UserController@currentUser');
-    Route::get('users/{id}', 'UserController@show');
-    Route::get('/users/current/show-status', 'UserController@showStatus');
     Route::put('users/current', 'UserController@update');
+    Route::get('/users/current/info', 'UserController@info');
+    Route::get('/users/current/products', 'UserController@products');
+    Route::get('/users/current/followers', 'UserController@followers');
+    Route::get('/users/current/following', 'UserController@following');
     Route::put('users/current/presentable', 'UserController@updatePresentableFields');
+
+
     Route::get('users', 'UserController@index');
+    Route::get('users/{id}', 'UserController@show');
     Route::get('users/{id}/stories', 'UserController@stories');
     Route::get('/users/current/balance', 'WalletController@balance');
 

@@ -38,9 +38,6 @@ class UserController extends Controller
             ->first();
 
 
-        //        dd($query);
-
-        //        return $query;
         return new ShowStatusResource($query);
 
     }
@@ -117,8 +114,6 @@ class UserController extends Controller
 
         $requestLinks = is_string($request->get('links')) ? json_decode($request->get('links'), true) : $request->get('links');
         $requestLinks = is_array($requestLinks) ? $requestLinks : [];
-
-
 
 
         $links = [];
@@ -268,5 +263,56 @@ class UserController extends Controller
         return new BasicResource($query);
     }
 
+
+    public function products(Request $request)
+    {
+        $query = User::selected()->where('id', Auth::id())
+            ->with(['products' => function ($q) use ($request) {
+                $q->hasPagination($request);
+            }])->first();
+
+        return new BasicResource($query);
+    }
+
+
+    public function info()
+    {
+        $query = User::query()
+            ->select([
+                'id',
+                'maximum_product_on_shop',
+                'shop_expired_at',
+                'count_product',
+            ])
+            ->where('id', Auth::id())
+            ->first()->toArray();
+
+        $query['on_shop'] = Auth::user()->shops()->count();
+        $query['on_sales'] = Auth::user()->onSales()->count();
+        $query['balance'] = Auth::user()->balance;
+
+        return new BasicResource($query);
+    }
+
+
+    public function followers()
+    {
+        $query = User::query()
+            ->selected()
+            ->where('id', Auth::id())->with(['followers'])
+            ->first();
+
+        return new BasicResource($query);
+    }
+
+    public function following()
+    {
+        $query = User::query()
+            ->selected()
+            ->where('id', Auth::id())->with(['following'])
+            ->first();
+
+        return new BasicResource($query);
+    }
 
 }

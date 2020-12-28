@@ -18,7 +18,7 @@ class OnSale implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $builder->where('type', 'ON_SALE')
-            ->leftJoin('products', 'products.id', '=', 'shops.product_id')
+            ->leftJoin('products as p', 'p.id', '=', 'shops.product_id')
         ;
     }
 }

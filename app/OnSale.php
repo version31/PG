@@ -9,7 +9,6 @@ class OnSale extends Shop
     protected $fillable = [
         'type',
         'product_id',
-        'day',
         'new_price',
         'published_at',
     ];
@@ -26,7 +25,6 @@ class OnSale extends Shop
 
         static::creating(function ($model) {
             $model->type = 'ON_SALE';
-            $model->day = 1;
         });
 
     }

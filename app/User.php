@@ -232,5 +232,14 @@ class User extends Authenticatable implements Wallet
     }
 
 
+    public function shops()
+    {
+        return $this->hasManyThrough(Shop::class, Product::class);
+    }
+
+    public function onSales()
+    {
+        return $this->hasManyThrough(OnSale::class, Product::class);
+    }
 
 }

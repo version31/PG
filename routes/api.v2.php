@@ -59,6 +59,7 @@ Route::middleware('auth:api')->group(function () {
     # shopping
     #--------------------------------------------------
     Route::get('shops', 'ShopController@index');
+    Route::post('shops', 'ShopController@store');
     Route::get('on-sales', 'OnSaleController@index');
     Route::post('on-sales', 'OnSaleController@store');
 

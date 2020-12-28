@@ -158,4 +158,13 @@ class Product extends Model implements HasMedia
     }
 
 
+    public function shops()
+    {
+        return $this->hasMany(Shop::class);
+    }
+
+    public function onSales()
+    {
+        return $this->hasMany(OnSale::class);
+    }
 }

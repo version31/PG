@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Shop extends Model
@@ -14,7 +15,6 @@ class Shop extends Model
     protected $fillable = [
         'type',
         'product_id',
-        'day',
         'new_price',
     ];
 
@@ -29,6 +29,7 @@ class Shop extends Model
 
         static::creating(function ($model) {
             $model->type = 'SHOP';
+            $model->published_at =  Carbon::today();
         });
 
     }

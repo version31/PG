@@ -14,14 +14,15 @@ class CreateShopsTable extends Migration
     public function up()
     {
         Schema::create('shops', function (Blueprint $table) {
-            $table->id();
             $table->unsignedInteger('product_id');
             $table->enum('type', ['ON_SALE', 'SHOP']);
             $table->integer('new_price')->nullable();
-            $table->integer('day')->default(1);
+            $table->date('published_at');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
+
+            $table->primary(['product_id', 'type']);
         });
     }
 

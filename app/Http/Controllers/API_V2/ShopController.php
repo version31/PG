@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API_V2;
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShopRequest;
+use App\Http\Resources\BasicResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Category;
 use App\OnSale;
@@ -19,6 +20,14 @@ class ShopController extends Controller
 {
     use Sh4Withdraw;
 
+
+    public function index(Request $request)
+    {
+        $query = Shop::hasPagination($request , 1)->get();
+
+
+        return new BasicResource($query);
+    }
 
 
     public function store(ShopRequest $request)

@@ -28,7 +28,7 @@ class OnSaleController extends Controller
         if (Carbon::now()->format('H') < date('H', strtotime(Variable::val('OnSaleOpenTime'))))
             $onSaleTime->subDay();
 
-        $query = OnSale::limit(Variable::val('OnSaleLimitProduct'))->orderBy('shops.id', 'desc')
+        $query = OnSale::limit(Variable::val('OnSaleLimitProduct'))->orderBy('shops.product_id', 'desc')
             ->where('shops.published_at', $onSaleTime->toDateString());
 
 
@@ -74,7 +74,11 @@ class OnSaleController extends Controller
         $details = $product->calculateOnSalePrice($productId);
 
 
-        if ($details['onSale_price_for_this_product'] > $details['owner_balance'])
+
+        if (\Auth::id() <> $details['owner_id'])
+            $errors[] = ['increase_balance' => 'شما مجاز به انجام این عملیات نیستید'];
+
+        elseif ($details['onSale_price_for_this_product'] > $details['owner_balance'])
             $errors[] = ['increase_balance' => 'موجودی شما کافی نیست. لطفا موجودی خود را افزایش دهید'];
 
 

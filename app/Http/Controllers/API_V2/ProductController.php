@@ -59,7 +59,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = new Product();
-        $products = $products->with(['user', 'category'])
+        $products = $products->with(['user'])
             ->orderBy('promote_expired_at', 'Desc')
             ->orderBy('id', 'Desc')
             ->where('status', '>', 0)

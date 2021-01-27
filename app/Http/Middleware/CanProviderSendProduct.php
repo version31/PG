@@ -14,7 +14,6 @@ class CanProviderSendProduct
     public function handle($request, Closure $next)
     {
         $errors = [];
-
 //        if (Auth::user()->shop_expired_at < Carbon::now())
 //            $errors[] = ['shop_expired' => 'فروشگاه شما منقضی شده است. لطفا فروشگاه خود را تمدید نمایید'];
 //

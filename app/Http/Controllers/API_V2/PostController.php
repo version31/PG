@@ -66,7 +66,7 @@ class PostController extends Controller
         $new->categories()->sync($categories);
         $new->tags()->sync($tags);
 
-        return new SuccessResource();
+        return new SuccessResource($new);
     }
 
 
@@ -82,6 +82,7 @@ class PostController extends Controller
 
         Post::find($id)->categories()->sync($categories);
         Post::find($id)->tags()->sync($tags);
+
 
         return new SuccessResource();
     }
